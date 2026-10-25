@@ -21,7 +21,7 @@ class DesignSystem {
   // Shadows (Don't add heavy shadows to feed cards)
   static final List<BoxShadow> cardShadow = [
     BoxShadow(
-      color: Colors.black.withOpacity(0.05),
+      color: Colors.black.withValues(alpha: 0.05),
       blurRadius: 4.0,
       offset: const Offset(0, 2),
     ),
@@ -36,14 +36,13 @@ class DesignSystem {
         secondary: secondary,
         surface: surface,
         error: error,
-        background: background,
       ),
       appBarTheme: const AppBarTheme(
         backgroundColor: surface,
         foregroundColor: Colors.black87,
         elevation: 1,
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: surface,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(cardRadius),

@@ -74,7 +74,7 @@ class _NewOccurrenceScreenState extends State<NewOccurrenceScreen> {
 
     try {
       Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
+        locationSettings: const LocationSettings(accuracy: LocationAccuracy.high),
       );
       setState(() {
         _currentLocation = LatLng(position.latitude, position.longitude);
@@ -209,7 +209,7 @@ class _NewOccurrenceScreenState extends State<NewOccurrenceScreen> {
                         labelText: 'Categoria',
                         border: OutlineInputBorder(),
                       ),
-                      value: _selectedCategory,
+                      initialValue: _selectedCategory,
                       items: OccurrenceCategory.values.map((cat) {
                         return DropdownMenuItem(
                           value: cat,

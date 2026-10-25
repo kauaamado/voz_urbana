@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -85,6 +86,25 @@ class MapScreen extends StatelessWidget {
                 style: const TextStyle(color: DesignSystem.secondary, fontSize: 12),
               ),
               const SizedBox(height: 16),
+              if (occurrence.imagePath != null && occurrence.imagePath.toString().isNotEmpty) ...[
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: occurrence.imagePath!.startsWith('http')
+                      ? Image.network(
+                          occurrence.imagePath!,
+                          height: 200,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        )
+                      : Image.file(
+                          File(occurrence.imagePath!),
+                          height: 200,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        ),
+                ),
+                const SizedBox(height: 16),
+              ],
             ],
           ),
         );
