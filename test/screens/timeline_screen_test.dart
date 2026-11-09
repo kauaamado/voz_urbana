@@ -40,4 +40,14 @@ void main() {
     expect(find.text('Endereço indisponível'), findsOneWidget);
     expect(find.textContaining('Registrado em:'), findsOneWidget);
   });
+
+  testWidgets('a barra do filtro ocupa toda a largura da tela', (tester) async {
+    tester.view.physicalSize = const Size(400, 800);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+
+    await _abrir(tester);
+    expect(tester.getSize(find.byType(FilterBar)).width, 400);
+    expect(tester.getTopLeft(find.byType(FilterBar)).dx, 0);
+  });
 }

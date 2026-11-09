@@ -22,7 +22,7 @@ Sem backend e sem persistência: tudo em memória (`OccurrenceProvider`, com 4 o
 - `services/address_service.dart` — `AddressService`; Nominatim (OSM) via `dart:io`, com cache em memória.
 - `screens/` — `home_screen` (abas + FAB), `map_screen`, `timeline_screen`, `new_occurrence_screen`.
 - `widgets/` — `filter_bar`, `category_chips`, `occurrence_marker`, `occurrence_detail_sheet`,
-  `occurrence_image`, `empty_occurrences`.
+  `occurrence_image`, `empty_occurrences`, `privacy_notice` (aviso LGPD com painel).
 
 ## Decisões
 - **RU4 = até 4 toques** (Registrar → foto → categoria → Publicar). O documento original dizia 3;
@@ -32,7 +32,9 @@ Sem backend e sem persistência: tudo em memória (`OccurrenceProvider`, com 4 o
 - Endereço via Nominatim: 100% gratuito, sem chave, sem dependência nova. Política: ≤1 req/s,
   User-Agent identificável, cache no cliente. Falha → "Endereço indisponível"; nunca bloqueia a publicação.
 - Sem upload real (não há backend): feedback de publicação = SnackBar + item novo no topo da lista.
-- `DesignSystem.success` = `#15803D` (contraste com texto branco).
+- `DesignSystem.success` = `#15803D` e `secondary` = `#4B5563` (contraste verificado por teste: secundário ≥7:1).
+- `FilterBar` mostra ícone de calendário, chip do período e contagem de resultados.
+- Rastreabilidade requisito → código/evidência/lacunas: `docs/usabilidade-rastreabilidade.md` (base do relatório; RU3, RU4 e RNF3 divergem do documento original).
 
 ## Pendências conhecidas
 - Testado no aparelho (Android 14) pelo aluno: roteiro de registro, GPS, mapa, filtro e câmera OK; botões do mapa e do chip fáceis de tocar. **TalkBack não foi testado** (não conseguiu ativar).

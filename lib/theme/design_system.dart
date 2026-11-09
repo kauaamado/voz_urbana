@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class DesignSystem {
   // Cores
   static const Color primary = Color(0xFF2563EB); // Blue
-  static const Color secondary = Color(0xFF6B7280); // Gray
+  static const Color secondary = Color(0xFF4B5563); // contraste ≥7:1 (leitura ao sol)
   static const Color tertiary = Color(0xFFF9FAFB); // Light
   static const Color background = Color(0xFFF9FAFB); // Fundo das telas
   static const Color surface = Color(0xFFFFFFFF); // Cartões

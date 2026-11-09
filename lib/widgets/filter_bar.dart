@@ -27,15 +27,19 @@ class FilterBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final provider = context.watch<OccurrenceProvider>();
     final fmt = DateFormat('dd/MM');
+    final count = provider.hasActiveFilter ? provider.occurrences.length : 0;
 
     return Container(
+      width: double.infinity, // ocupa a largura toda também dentro de uma Column
       color: DesignSystem.surface,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: Row(
+      child: Wrap(
+        crossAxisAlignment: WrapCrossAlignment.center,
+        spacing: 8,
         children: [
           TextButton.icon(
             onPressed: () => _pick(context, provider),
-            icon: const Icon(Icons.filter_alt, color: DesignSystem.primary),
+            icon: const Icon(Icons.calendar_month, color: DesignSystem.primary),
             label: const Text(
               'Filtrar período',
               style: TextStyle(color: DesignSystem.primary, fontSize: 14),
@@ -45,15 +49,19 @@ class FilterBar extends StatelessWidget {
             ),
           ),
           if (provider.hasActiveFilter) ...[
-            const SizedBox(width: 8),
-            Flexible(
-              child: InputChip(
-                label: Text(
-                  '${fmt.format(provider.filterStartDate!)} – ${fmt.format(provider.filterEndDate!)}',
-                  style: const TextStyle(fontSize: 14),
-                ),
-                deleteButtonTooltipMessage: 'Limpar filtro',
-                onDeleted: provider.clearFilter,
+            InputChip(
+              label: Text(
+                '${fmt.format(provider.filterStartDate!)} – ${fmt.format(provider.filterEndDate!)}',
+                style: const TextStyle(fontSize: 14),
+              ),
+              deleteButtonTooltipMessage: 'Limpar filtro',
+              onDeleted: provider.clearFilter,
+            ),
+            Semantics(
+              liveRegion: true, // leitores de tela anunciam a nova contagem
+              child: Text(
+                count == 1 ? '1 ocorrência' : '$count ocorrências',
+                style: const TextStyle(color: DesignSystem.secondary, fontSize: 14),
               ),
             ),
           ],

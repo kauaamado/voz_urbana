@@ -9,6 +9,7 @@ import '../services/location_service.dart';
 import '../theme/design_system.dart';
 import '../widgets/category_chips.dart';
 import '../widgets/occurrence_image.dart';
+import '../widgets/privacy_notice.dart';
 
 typedef ImagePathPicker = Future<String?> Function(ImageSource source);
 
@@ -154,7 +155,7 @@ class _NewOccurrenceScreenState extends State<NewOccurrenceScreen>
     final discard = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Descartar registro?'),
+        title: const Text('Descartar ocorrência?'),
         content: const Text('Os dados preenchidos serão perdidos.'),
         actions: [
           TextButton(
@@ -211,7 +212,7 @@ class _NewOccurrenceScreenState extends State<NewOccurrenceScreen>
         }
       },
       child: Scaffold(
-        appBar: AppBar(title: const Text('Nova Ocorrência')),
+        appBar: AppBar(title: const Text('Registrar ocorrência')),
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -258,10 +259,7 @@ class _NewOccurrenceScreenState extends State<NewOccurrenceScreen>
                 ],
               ),
               const SizedBox(height: 8),
-              const Text(
-                'Sua publicação é anônima. A foto e a localização ficarão visíveis para todos no mapa.',
-                style: TextStyle(color: DesignSystem.secondary, fontSize: 12),
-              ),
+              const PrivacyNotice(),
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: missing.isEmpty ? _publish : null,
