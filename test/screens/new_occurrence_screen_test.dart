@@ -22,37 +22,40 @@ Future<OccurrenceProvider> _abrir(
   await tester.binding.setSurfaceSize(const Size(500, 1600));
   addTearDown(() => tester.binding.setSurfaceSize(null));
   final provider = OccurrenceProvider();
-  await tester.pumpWidget(ChangeNotifierProvider.value(
-    value: provider,
-    child: MaterialApp(
-      home: Builder(
-        builder: (context) => Scaffold(
-          body: Center(
-            child: ElevatedButton(
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => NewOccurrenceScreen(
-                    locationService: location ?? FakeLocation(_ok),
-                    addressService: address ?? FakeAddress(null),
-                    pickImagePath: picker ?? (_) async => '/fake/foto.jpg',
+  await tester.pumpWidget(
+    ChangeNotifierProvider.value(
+      value: provider,
+      child: MaterialApp(
+        home: Builder(
+          builder: (context) => Scaffold(
+            body: Center(
+              child: ElevatedButton(
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => NewOccurrenceScreen(
+                      locationService: location ?? FakeLocation(_ok),
+                      addressService: address ?? FakeAddress(null),
+                      pickImagePath: picker ?? (_) async => '/fake/foto.jpg',
+                    ),
                   ),
                 ),
+                child: const Text('abrir'),
               ),
-              child: const Text('abrir'),
             ),
           ),
         ),
       ),
     ),
-  ));
+  );
   await tester.tap(find.text('abrir'));
   await tester.pumpAndSettle();
   return provider;
 }
 
 Finder get _publicar => find.widgetWithText(ElevatedButton, 'Publicar');
-bool _habilitado(WidgetTester t) => t.widget<ElevatedButton>(_publicar).onPressed != null;
+bool _habilitado(WidgetTester t) =>
+    t.widget<ElevatedButton>(_publicar).onPressed != null;
 
 Future<void> _fotoECategoria(WidgetTester tester) async {
   await tester.tap(find.text('Câmera'));
@@ -62,17 +65,22 @@ Future<void> _fotoECategoria(WidgetTester tester) async {
 }
 
 void main() {
-  testWidgets('abre desabilitado dizendo o que falta; habilita com foto e categoria', (tester) async {
-    await _abrir(tester);
-    expect(_habilitado(tester), isFalse);
-    expect(find.text('Falta: foto, categoria'), findsOneWidget);
+  testWidgets(
+    'abre desabilitado dizendo o que falta; habilita com foto e categoria',
+    (tester) async {
+      await _abrir(tester);
+      expect(_habilitado(tester), isFalse);
+      expect(find.text('Falta: foto, categoria'), findsOneWidget);
 
-    await _fotoECategoria(tester);
-    expect(_habilitado(tester), isTrue);
-    expect(find.textContaining('Falta:'), findsNothing);
-  });
+      await _fotoECategoria(tester);
+      expect(_habilitado(tester), isTrue);
+      expect(find.textContaining('Falta:'), findsNothing);
+    },
+  );
 
-  testWidgets('cancelar a câmera (null) não altera nada nem lança', (tester) async {
+  testWidgets('cancelar a câmera (null) não altera nada nem lança', (
+    tester,
+  ) async {
     await _abrir(tester, picker: (_) async => null);
     await tester.tap(find.text('Câmera'));
     await tester.pumpAndSettle();
@@ -80,13 +88,18 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('permissão negada para sempre oferece abrir configurações', (tester) async {
+  testWidgets('permissão negada para sempre oferece abrir configurações', (
+    tester,
+  ) async {
     final loc = FakeLocation(const LocationDeniedForever());
     await _abrir(tester, location: loc);
     expect(find.text('Abrir configurações'), findsOneWidget);
     await tester.tap(find.text('Abrir configurações'));
     expect(loc.appSettings, 1);
-    expect(find.textContaining('localização'), findsWidgets); // formulário segue utilizável
+    expect(
+      find.textContaining('localização'),
+      findsWidgets,
+    ); // formulário segue utilizável
   });
 
   testWidgets('GPS desligado oferece ativar o GPS', (tester) async {
@@ -96,25 +109,31 @@ void main() {
     expect(loc.locationSettings, 1);
   });
 
-  testWidgets('título em branco vira o nome da categoria e descrição fica vazia', (tester) async {
-    final provider = await _abrir(tester);
-    await _fotoECategoria(tester);
-    await tester.tap(find.text('Detalhes (opcional)'));
-    await tester.pumpAndSettle();
-    await tester.enterText(find.byType(TextField).first, '   ');
-    await tester.tap(_publicar);
-    await tester.pumpAndSettle();
+  testWidgets(
+    'título em branco vira o nome da categoria e descrição fica vazia',
+    (tester) async {
+      final provider = await _abrir(tester);
+      await _fotoECategoria(tester);
+      await tester.tap(find.text('Detalhes (opcional)'));
+      await tester.pumpAndSettle();
+      await tester.enterText(find.byType(TextField).first, '   ');
+      await tester.tap(_publicar);
+      await tester.pumpAndSettle();
 
-    final nova = provider.occurrences.first;
-    expect(nova.title, 'Lazer');
-    expect(nova.description, '');
-    expect(nova.category, OccurrenceCategory.lazer);
-    expect(nova.imagePath, '/fake/foto.jpg');
-    expect(find.text('Ocorrência registrada com sucesso!'), findsOneWidget);
-  });
+      final nova = provider.occurrences.first;
+      expect(nova.title, 'Lazer');
+      expect(nova.description, '');
+      expect(nova.category, OccurrenceCategory.lazer);
+      expect(nova.imagePath, '/fake/foto.jpg');
+      expect(find.text('Ocorrência registrada com sucesso!'), findsOneWidget);
+    },
+  );
 
   testWidgets('publica com o endereço encontrado', (tester) async {
-    final provider = await _abrir(tester, address: FakeAddress('Rua Z, Centro'));
+    final provider = await _abrir(
+      tester,
+      address: FakeAddress('Rua Z, Centro'),
+    );
     await _fotoECategoria(tester);
     await tester.tap(_publicar);
     await tester.pumpAndSettle();
@@ -151,5 +170,53 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Descartar registro?'), findsNothing);
     expect(find.text('Nova Ocorrência'), findsNothing);
+  });
+
+  Future<void> idaEVoltaDoApp(WidgetTester tester) async {
+    final b = tester.binding;
+    for (final st in [
+      AppLifecycleState.inactive,
+      AppLifecycleState.hidden,
+      AppLifecycleState.paused,
+      AppLifecycleState.hidden,
+      AppLifecycleState.inactive,
+      AppLifecycleState.resumed,
+    ]) {
+      b.handleAppLifecycleStateChanged(st);
+    }
+    await tester.pumpAndSettle();
+  }
+
+  testWidgets('voltar da câmera não refaz o pedido de permissão', (
+    tester,
+  ) async {
+    final loc = FakeLocation(const LocationDenied());
+    await _abrir(tester, location: loc);
+    expect(loc.calls, 1);
+
+    await idaEVoltaDoApp(tester);
+    expect(loc.calls, 1);
+  });
+
+  testWidgets('voltar das configurações do GPS tenta a localização de novo', (
+    tester,
+  ) async {
+    final loc = FakeLocation(const LocationServiceDisabled());
+    await _abrir(tester, location: loc);
+    await tester.tap(find.text('Ativar GPS'));
+    await tester.pump();
+
+    await idaEVoltaDoApp(tester);
+    expect(loc.calls, 2);
+  });
+
+  testWidgets('cartão de localização anuncia mudanças aos leitores de tela', (
+    tester,
+  ) async {
+    final handle = tester.ensureSemantics();
+    await _abrir(tester);
+    final node = tester.getSemantics(find.byKey(const Key('location-card')));
+    expect(node.flagsCollection.isLiveRegion, isTrue);
+    handle.dispose();
   });
 }

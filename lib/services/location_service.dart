@@ -29,21 +29,21 @@ class LocationError extends LocationResult {
 
 extension LocationResultText on LocationResult {
   String get message => switch (this) {
-        LocationOk() => 'Localização capturada',
-        LocationServiceDisabled() =>
-          'O GPS está desativado. Ative-o para registrar a ocorrência.',
-        LocationDenied() => 'Permissão de localização negada.',
-        LocationDeniedForever() =>
-          'Permissão de localização bloqueada. Libere-a nas configurações do aplicativo.',
-        LocationError() => 'Não foi possível obter a localização.',
-      };
+    LocationOk() => 'Localização capturada',
+    LocationServiceDisabled() =>
+      'O GPS está desativado. Ative-o para registrar a ocorrência.',
+    LocationDenied() => 'Permissão de localização negada.',
+    LocationDeniedForever() =>
+      'Permissão de localização bloqueada. Libere-a nas configurações do aplicativo.',
+    LocationError() => 'Não foi possível obter a localização.',
+  };
 
   String? get actionLabel => switch (this) {
-        LocationOk() => null,
-        LocationServiceDisabled() => 'Ativar GPS',
-        LocationDeniedForever() => 'Abrir configurações',
-        LocationDenied() || LocationError() => 'Tentar novamente',
-      };
+    LocationOk() => null,
+    LocationServiceDisabled() => 'Ativar GPS',
+    LocationDeniedForever() => 'Abrir configurações',
+    LocationDenied() || LocationError() => 'Tentar novamente',
+  };
 }
 
 abstract class LocationService {
@@ -53,6 +53,13 @@ abstract class LocationService {
 }
 
 class GeolocatorLocationService implements LocationService {
+  GeolocatorLocationService({
+    this.positionTimeout = const Duration(seconds: 15),
+  });
+
+  /// Tempo máximo esperando o fix do GPS (ex.: ambiente fechado).
+  final Duration positionTimeout;
+
   @override
   Future<LocationResult> current() async {
     try {
@@ -70,8 +77,11 @@ class GeolocatorLocationService implements LocationService {
         return const LocationDenied();
       }
       final position = await Geolocator.getCurrentPosition(
-        locationSettings: const LocationSettings(accuracy: LocationAccuracy.high),
-      );
+        locationSettings: LocationSettings(
+          accuracy: LocationAccuracy.high,
+          timeLimit: positionTimeout,
+        ),
+      ).timeout(positionTimeout);
       return LocationOk(LatLng(position.latitude, position.longitude));
     } catch (e) {
       return LocationError(e);

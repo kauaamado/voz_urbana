@@ -13,7 +13,11 @@ import '../widgets/occurrence_image.dart';
 typedef ImagePathPicker = Future<String?> Function(ImageSource source);
 
 Future<String?> _defaultPicker(ImageSource source) async {
-  final file = await ImagePicker().pickImage(source: source, imageQuality: 70);
+  final file = await ImagePicker().pickImage(
+    source: source,
+    imageQuality: 70,
+    maxWidth: 1280, // evita decodificar fotos de 12 MP inteiras
+  );
   return file?.path;
 }
 
@@ -53,6 +57,7 @@ class _NewOccurrenceScreenState extends State<NewOccurrenceScreen>
   bool _loadingLocation = false;
   bool _loadingAddress = false;
   bool _allowPop = false;
+  bool _awaitingSettings = false;
 
   bool get _dirty =>
       _imagePath != null ||
@@ -61,10 +66,10 @@ class _NewOccurrenceScreenState extends State<NewOccurrenceScreen>
       _descriptionController.text.trim().isNotEmpty;
 
   List<String> get _missing => [
-        if (_imagePath == null) 'foto',
-        if (_category == null) 'categoria',
-        if (_location == null) 'localização',
-      ];
+    if (_imagePath == null) 'foto',
+    if (_category == null) 'categoria',
+    if (_location == null) 'localização',
+  ];
 
   @override
   void initState() {
@@ -83,13 +88,13 @@ class _NewOccurrenceScreenState extends State<NewOccurrenceScreen>
     super.dispose();
   }
 
-  /// Ao voltar das configurações do sistema, tenta de novo se ainda não há GPS.
+  /// Ao voltar das configurações do sistema (e só nesse caso), tenta de novo.
+  /// Não repete ao voltar da câmera: reabriria o pedido de permissão.
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed &&
-        _location == null &&
-        !_loadingLocation) {
-      _getLocation();
+    if (state == AppLifecycleState.resumed && _awaitingSettings) {
+      _awaitingSettings = false;
+      if (_location == null && !_loadingLocation) _getLocation();
     }
   }
 
@@ -120,8 +125,10 @@ class _NewOccurrenceScreenState extends State<NewOccurrenceScreen>
   Future<void> _onLocationAction() async {
     switch (_locationResult) {
       case LocationServiceDisabled():
+        _awaitingSettings = true;
         await _locationService.openLocationSettings();
       case LocationDeniedForever():
+        _awaitingSettings = true;
         await _locationService.openAppSettings();
       default:
         await _getLocation();
@@ -156,8 +163,10 @@ class _NewOccurrenceScreenState extends State<NewOccurrenceScreen>
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('Descartar',
-                style: TextStyle(color: DesignSystem.error)),
+            child: const Text(
+              'Descartar',
+              style: TextStyle(color: DesignSystem.error),
+            ),
           ),
         ],
       ),
@@ -210,8 +219,10 @@ class _NewOccurrenceScreenState extends State<NewOccurrenceScreen>
             children: [
               _buildPhoto(),
               const SizedBox(height: 16),
-              const Text('Categoria',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+              const Text(
+                'Categoria',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+              ),
               const SizedBox(height: 8),
               CategoryChips(
                 selected: _category,
@@ -221,8 +232,10 @@ class _NewOccurrenceScreenState extends State<NewOccurrenceScreen>
               _buildLocationCard(),
               const SizedBox(height: 8),
               ExpansionTile(
-                title: const Text('Detalhes (opcional)',
-                    style: TextStyle(fontSize: 14)),
+                title: const Text(
+                  'Detalhes (opcional)',
+                  style: TextStyle(fontSize: 14),
+                ),
                 tilePadding: EdgeInsets.zero,
                 childrenPadding: const EdgeInsets.only(bottom: 8),
                 children: [
@@ -261,7 +274,9 @@ class _NewOccurrenceScreenState extends State<NewOccurrenceScreen>
                     'Falta: ${missing.join(', ')}',
                     textAlign: TextAlign.center,
                     style: const TextStyle(
-                        color: DesignSystem.secondary, fontSize: 12),
+                      color: DesignSystem.secondary,
+                      fontSize: 12,
+                    ),
                   ),
                 ),
             ],
@@ -279,23 +294,36 @@ class _NewOccurrenceScreenState extends State<NewOccurrenceScreen>
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
-            child: OccurrenceImage(path: path, height: 200, width: double.infinity),
+            child: OccurrenceImage(
+              path: path,
+              height: 200,
+              width: double.infinity,
+            ),
           ),
           TextButton.icon(
             onPressed: () => setState(() => _imagePath = null),
             icon: const Icon(Icons.delete, color: DesignSystem.error),
-            label: const Text('Remover foto',
-                style: TextStyle(color: DesignSystem.error)),
+            label: const Text(
+              'Remover foto',
+              style: TextStyle(color: DesignSystem.error),
+            ),
           ),
         ],
       );
     }
     return Row(
       children: [
-        Expanded(child: _photoButton(Icons.camera_alt, 'Câmera', ImageSource.camera)),
+        Expanded(
+          child: _photoButton(Icons.camera_alt, 'Câmera', ImageSource.camera),
+        ),
         const SizedBox(width: 16),
         Expanded(
-            child: _photoButton(Icons.photo_library, 'Galeria', ImageSource.gallery)),
+          child: _photoButton(
+            Icons.photo_library,
+            'Galeria',
+            ImageSource.gallery,
+          ),
+        ),
       ],
     );
   }
@@ -305,9 +333,7 @@ class _NewOccurrenceScreenState extends State<NewOccurrenceScreen>
       onPressed: () => _pick(source),
       icon: Icon(icon),
       label: Text(label),
-      style: OutlinedButton.styleFrom(
-        minimumSize: const Size.fromHeight(64),
-      ),
+      style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(64)),
     );
   }
 
@@ -315,57 +341,64 @@ class _NewOccurrenceScreenState extends State<NewOccurrenceScreen>
     final result = _locationResult;
     final failed = !_loadingLocation && _location == null && result != null;
 
-    return Card(
-      elevation: 0,
-      margin: EdgeInsets.zero,
-      color: DesignSystem.tertiary,
-      shape: RoundedRectangleBorder(
-        side: BorderSide(color: Colors.grey.shade300),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Row(
-          children: [
-            if (_loadingLocation)
-              const SizedBox(
+    return Semantics(
+      key: const Key('location-card'),
+      liveRegion: true, // leitores de tela anunciam "capturada"/erro
+      child: Card(
+        elevation: 0,
+        margin: EdgeInsets.zero,
+        color: DesignSystem.tertiary,
+        shape: RoundedRectangleBorder(
+          side: BorderSide(color: Colors.grey.shade300),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Row(
+            children: [
+              if (_loadingLocation)
+                const SizedBox(
                   width: 24,
                   height: 24,
-                  child: CircularProgressIndicator(strokeWidth: 2))
-            else if (_location != null)
-              const Icon(Icons.check_circle, color: DesignSystem.success)
-            else
-              const Icon(Icons.error, color: DesignSystem.error),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    _loadingLocation
-                        ? 'Obtendo localização atual...'
-                        : _location != null
-                            ? 'Localização capturada'
-                            : (result?.message ?? 'Localização indisponível'),
-                    style: const TextStyle(fontSize: 14),
-                  ),
-                  if (_location != null)
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                )
+              else if (_location != null)
+                const Icon(Icons.check_circle, color: DesignSystem.success)
+              else
+                const Icon(Icons.error, color: DesignSystem.error),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                     Text(
-                      _loadingAddress
-                          ? 'Buscando endereço...'
-                          : (_address ?? 'Endereço indisponível'),
-                      style: const TextStyle(
-                          color: DesignSystem.secondary, fontSize: 12),
+                      _loadingLocation
+                          ? 'Obtendo localização atual...'
+                          : _location != null
+                          ? 'Localização capturada'
+                          : (result?.message ?? 'Localização indisponível'),
+                      style: const TextStyle(fontSize: 14),
                     ),
-                ],
+                    if (_location != null)
+                      Text(
+                        _loadingAddress
+                            ? 'Buscando endereço...'
+                            : (_address ?? 'Endereço indisponível'),
+                        style: const TextStyle(
+                          color: DesignSystem.secondary,
+                          fontSize: 12,
+                        ),
+                      ),
+                  ],
+                ),
               ),
-            ),
-            if (failed && result.actionLabel != null)
-              TextButton(
-                onPressed: _onLocationAction,
-                child: Text(result.actionLabel!),
-              ),
-          ],
+              if (failed && result.actionLabel != null)
+                TextButton(
+                  onPressed: _onLocationAction,
+                  child: Text(result.actionLabel!),
+                ),
+            ],
+          ),
         ),
       ),
     );
