@@ -69,20 +69,19 @@ class _OccurrenceCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Wrap(
+                      alignment: WrapAlignment.spaceBetween,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      spacing: 8,
                       children: [
-                        Flexible(
-                          child: Chip(
-                            avatar: Icon(occurrence.category.icon,
-                                size: 18, color: occurrence.category.color),
-                            label: Text(occurrence.category.label,
-                                style: const TextStyle(fontSize: 14)),
-                            backgroundColor: DesignSystem.tertiary,
-                            side: BorderSide.none,
-                          ),
+                        Chip(
+                          avatar: Icon(occurrence.category.icon,
+                              size: 18, color: occurrence.category.color),
+                          label: Text(occurrence.category.label,
+                              style: const TextStyle(fontSize: 14)),
+                          backgroundColor: DesignSystem.tertiary,
+                          side: BorderSide.none,
                         ),
-                        const SizedBox(width: 8),
                         Text(
                           DateFormat('dd/MM/yyyy HH:mm').format(occurrence.dateTime),
                           style: Theme.of(context).textTheme.bodySmall,
