@@ -55,6 +55,7 @@ class OccurrenceProvider with ChangeNotifier {
   
   DateTime? get filterStartDate => _filterStartDate;
   DateTime? get filterEndDate => _filterEndDate;
+  bool get hasActiveFilter => _filterStartDate != null && _filterEndDate != null;
 
   void addOccurrence(Occurrence occurrence) {
     _occurrences.insert(0, occurrence); // Adiciona no início
