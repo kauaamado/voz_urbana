@@ -1,0 +1,300 @@
+{
+ "persona": "Renata, 42 anos, servidora da prefeitura",
+ "avaliacoes": [
+  {
+   "id": "1.1",
+   "nota": 0,
+   "comentario": "Sem problema: duas abas (Mapa e Linha do Tempo) com o mesmo filtro, em home_screen.dart; estrutura simples de entender."
+  },
+  {
+   "id": "1.2",
+   "nota": 0,
+   "comentario": "Sem problema: home_screen.dart mantém AppBar e barra inferior fixas em todas as abas."
+  },
+  {
+   "id": "1.3",
+   "nota": 0,
+   "comentario": "Sem problema: BottomNavigationBar com ícone e rótulo textual (home_screen.dart)."
+  },
+  {
+   "id": "1.4",
+   "nota": 0,
+   "comentario": "Sem problema: ações com texto ('Filtrar período', 'Saiba mais', 'Publicar'); marcadores do mapa têm Semantics de botão (occurrence_marker.dart)."
+  },
+  {
+   "id": "1.5",
+   "nota": 0,
+   "comentario": "Sem problema: duas abas mais o botão Registrar; poucos passos para consultar os registros."
+  },
+  {
+   "id": "1.6",
+   "nota": 0,
+   "comentario": "Sem problema: não há telas sem saída; new_occurrence_screen.dart pede confirmação antes de descartar o formulário."
+  },
+  {
+   "id": "1.7",
+   "nota": 0,
+   "comentario": "Sem problema: ícones vêm acompanhados de texto (abas, chips, FAB); o botão de localização tem tooltip (map_screen.dart)."
+  },
+  {
+   "id": "1.8",
+   "nota": 1,
+   "comentario": "home_screen: a AppBar mostra 'Voz Urbana' nas duas abas; 'Mapa' e 'Linha do Tempo' são só rótulos da barra inferior. Só o registro tem título próprio ('Registrar ocorrência')."
+  },
+  {
+   "id": "1.9",
+   "nota": 1,
+   "comentario": "home_screen.dart e map_screen.dart: não há tela de contato nem informação do órgão responsável; o detalhe da ocorrência é acessível, mas não indica quem atende."
+  },
+  {
+   "id": "1.10",
+   "nota": 0,
+   "comentario": "Sem problema: detalhe em 1 toque no marcador e em 2 toques na lista (timeline_screen.dart); filtro de período em poucos toques."
+  },
+  {
+   "id": "1.11",
+   "nota": 0,
+   "comentario": "Sem problema: a folha de detalhe fecha e o Voltar do sistema retorna à aba anterior; não há becos sem saída."
+  },
+  {
+   "id": "1.12",
+   "nota": 2,
+   "comentario": "Não há atalho entre ocorrências relacionadas (mesmo bairro ou categoria); occurrence_detail_sheet.dart mostra só a ocorrência atual, o que atrapalha a comparação que Renata faz."
+  },
+  {
+   "id": "1.13",
+   "nota": 0,
+   "comentario": "Sem problema: a troca entre Mapa e Linha do Tempo é direta pela barra inferior (home_screen.dart)."
+  },
+  {
+   "id": "1.14",
+   "nota": "N/A",
+   "comentario": "Mapa do site é recurso de site; o app tem o próprio mapa interativo na aba Mapa."
+  },
+  {
+   "id": "1.15",
+   "nota": 0,
+   "comentario": "Sem problema: o conteúdo (categoria, foto, local, data) condiz com o registro de problemas urbanos; a persistência dos dados é tratada em 4.5."
+  },
+  {
+   "id": "1.16",
+   "nota": 1,
+   "comentario": "occurrence_detail_sheet.dart: o detalhe não traz status nem andamento do atendimento, que a servidora precisa; o conteúdo é voltado ao cidadão que registra."
+  },
+  {
+   "id": "1.17",
+   "nota": 2,
+   "comentario": "Sem busca nem filtro por categoria ou bairro (filter_bar.dart): achar um problema específico exige rolar a lista inteira."
+  },
+  {
+   "id": "2.1",
+   "nota": 0,
+   "comentario": "Sem problema: categorias em linguagem comum ('Iluminação Pública', 'Pavimentação', 'Saneamento') e mensagens curtas (occurrence.dart, filter_bar.dart)."
+  },
+  {
+   "id": "2.2",
+   "nota": 0,
+   "comentario": "Sem problema: o provider ordena do mais recente para o mais antigo; datas em dd/MM/yyyy HH:mm (timeline_screen.dart)."
+  },
+  {
+   "id": "3.1",
+   "nota": "N/A",
+   "comentario": "App Flutter sem animação de abertura no código; a animação Flash de site não se aplica."
+  },
+  {
+   "id": "3.2",
+   "nota": 3,
+   "comentario": "Sem campo de busca em Mapa nem em Linha do Tempo (filter_bar.dart). Renata não acha um bairro: só filtra por período, o que é grave com muitos registros."
+  },
+  {
+   "id": "3.3",
+   "nota": "N/A",
+   "comentario": "Impressão de página é recurso de navegador; o app móvel não tem função de impressão no código."
+  },
+  {
+   "id": "3.4",
+   "nota": "N/A",
+   "comentario": "O app não reproduz música nem som; não há nada para desligar."
+  },
+  {
+   "id": "3.5",
+   "nota": 0,
+   "comentario": "Análogo móvel: se a foto não carrega, occurrence_image.dart mostra um ícone e o texto da ocorrência permanece; sem defeito grave."
+  },
+  {
+   "id": "3.6",
+   "nota": 1,
+   "comentario": "Não há ajuste de fonte dentro do app; o texto segue a escala do sistema. Textos de 12 px em cinza são pequenos para a persona."
+  },
+  {
+   "id": "4.1",
+   "nota": 0,
+   "comentario": "Sem problema: o FAB Registrar e o chip de filtro se comportam igual em todas as telas; 'Limpar filtro' tem o mesmo efeito nos dois lugares."
+  },
+  {
+   "id": "4.2",
+   "nota": 0,
+   "comentario": "Sem problema: cores, raio de cartões e espaçamentos vêm de design_system.dart e são usados de forma consistente."
+  },
+  {
+   "id": "4.3",
+   "nota": "N/A",
+   "comentario": "Compatibilidade de navegador não se aplica a app Flutter; as plataformas não são verificáveis só pelo lib/."
+  },
+  {
+   "id": "4.4",
+   "nota": "N/A",
+   "comentario": "Resolução 800x600 é de tela de site; o app usa layout flexível (Expanded, Wrap) sem larguras fixas."
+  },
+  {
+   "id": "4.5",
+   "nota": 3,
+   "comentario": "Os fluxos funcionam, mas os registros ficam só na memória (occurrence_provider.dart; privacy_notice.dart): ao reiniciar o app somem. Para Renata, não serve como evidência histórica."
+  },
+  {
+   "id": "5.1",
+   "nota": 0,
+   "comentario": "Sem problema: a exigência de GPS e permissão aparece no cartão de localização com ação ('Ativar GPS', 'Abrir configurações') (new_occurrence_screen.dart)."
+  },
+  {
+   "id": "5.2",
+   "nota": 0,
+   "comentario": "Sem problema: publicar exige foto, categoria e local; o filtro de período é familiar para a persona."
+  },
+  {
+   "id": "5.3",
+   "nota": 1,
+   "comentario": "new_occurrence_screen.dart: 'Remover foto' apaga na hora, sem confirmação. Publicar só habilita com dados completos, o que evita erro."
+  },
+  {
+   "id": "6.1",
+   "nota": 1,
+   "comentario": "occurrence_detail_sheet.dart mostra 'Registrado em', mas não há data de atualização nem status do registro. A parte de URL não se aplica a app."
+  },
+  {
+   "id": "6.2",
+   "nota": 1,
+   "comentario": "Ícones de categoria são reconhecíveis, mas o mapa não tem legenda: a categoria de cada marcador só aparece depois do toque (map_screen.dart)."
+  },
+  {
+   "id": "6.3",
+   "nota": 0,
+   "comentario": "Sem problema: o chip do filtro mostra o período ativo e a contagem, em Mapa e Linha do Tempo (filter_bar.dart)."
+  },
+  {
+   "id": "6.4",
+   "nota": 0,
+   "comentario": "Sem problema: filtro único e compartilhado entre as abas; Renata não precisa lembrar o período ao trocar de tela."
+  },
+  {
+   "id": "6.5",
+   "nota": 1,
+   "comentario": "home_screen.dart: a AppBar só diz 'Voz Urbana' e o app abre no Mapa sem texto explicando o propósito; o objetivo aparece só no formulário."
+  },
+  {
+   "id": "7.1",
+   "nota": 1,
+   "comentario": "Mesmo caso de 6.2: os ícones ajudam, mas falta legenda no mapa e não há atalhos para os filtros que Renata usa."
+  },
+  {
+   "id": "7.2",
+   "nota": 0,
+   "comentario": "Sem problema: mesmo caso de 6.3; o estado do filtro fica visível o tempo todo."
+  },
+  {
+   "id": "7.3",
+   "nota": 0,
+   "comentario": "Sem problema: mesmo caso de 6.4; o filtro é compartilhado entre as abas."
+  },
+  {
+   "id": "8.1",
+   "nota": 0,
+   "comentario": "Sem problema: usa só a fonte padrão do Material, sem fonte customizada (design_system.dart)."
+  },
+  {
+   "id": "8.2",
+   "nota": 1,
+   "comentario": "Seis cores de categoria; Iluminação Pública (B45309) e Pavimentação (C2410C) são parecidas no marcador e difíceis de distinguir (occurrence.dart)."
+  },
+  {
+   "id": "8.3",
+   "nota": 0,
+   "comentario": "Sem problema: o layout de mapa, lista e formulário é adequado ao registro e à consulta."
+  },
+  {
+   "id": "8.4",
+   "nota": 0,
+   "comentario": "Sem problema: visual Material limpo, com paleta azul coerente (design_system.dart)."
+  },
+  {
+   "id": "8.5",
+   "nota": 0,
+   "comentario": "Sem problema: barra de filtro no topo e botões flutuantes em posições definidas (map_screen.dart)."
+  },
+  {
+   "id": "8.6",
+   "nota": 1,
+   "comentario": "A data em bodySmall cinza fica discreta na lista (timeline_screen.dart), embora seja a evidência que Renata busca; a foto no detalhe tem 200 px e não amplia."
+  },
+  {
+   "id": "8.7",
+   "nota": 0,
+   "comentario": "Sem problema: o cinza secundário (#4B5563) sobre fundo claro tem bom contraste; as combinações são legíveis."
+  },
+  {
+   "id": "8.8",
+   "nota": 1,
+   "comentario": "Endereço, data e 'Registrado em' usam 12 px em cinza (timeline_screen.dart, occurrence_detail_sheet.dart); são pequenos para leitura prolongada."
+  },
+  {
+   "id": "8.9",
+   "nota": "N/A",
+   "comentario": "Resolução 800x600 é de tela de computador; no app móvel não se aplica."
+  },
+  {
+   "id": "8.10",
+   "nota": 0,
+   "comentario": "Sem problema: lista e formulário rolam, o esperado no celular; a tela do mapa não tem rolagem."
+  },
+  {
+   "id": "8.11",
+   "nota": 0,
+   "comentario": "Sem problema: cartões em blocos curtos (título, categoria, data, endereço); a privacidade está em tópicos (privacy_notice.dart)."
+  },
+  {
+   "id": "8.12",
+   "nota": 1,
+   "comentario": "Os cartões ocupam a largura toda, sem limite (timeline_screen.dart); se usado no computador, as linhas de texto ficam longas."
+  },
+  {
+   "id": "8.13",
+   "nota": 0,
+   "comentario": "Sem problema: ordem lógica: foto, categoria, localização, detalhes, publicar (new_occurrence_screen.dart)."
+  },
+  {
+   "id": "9.1",
+   "nota": 0,
+   "comentario": "Sem problema: ajuda contextual em 'Saiba mais' da privacidade, ação no cartão de localização e 'Falta: ...' abaixo do botão."
+  },
+  {
+   "id": "9.2",
+   "nota": 1,
+   "comentario": "Não há tela de ajuda nem índice de tarefas; Renata não tem onde aprender a filtrar ou consultar os registros. Baixa prioridade."
+  },
+  {
+   "id": "9.3",
+   "nota": 0,
+   "comentario": "Sem problema: a ajuda de privacidade abre na hora, em folha local (privacy_notice.dart)."
+  },
+  {
+   "id": "10.1",
+   "nota": 0,
+   "comentario": "Sem problema: mensagens claras, como 'O GPS está desativado. Ative-o para registrar a ocorrência.' (location_service.dart)."
+  },
+  {
+   "id": "10.2",
+   "nota": 2,
+   "comentario": "Ocorrência publicada não pode ser editada nem excluída, e 'Remover foto' não tem desfazer (new_occurrence_screen.dart). Renata não consegue corrigir um registro com erro."
+  }
+ ]
+}

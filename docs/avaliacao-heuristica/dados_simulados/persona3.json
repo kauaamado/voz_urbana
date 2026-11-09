@@ -1,0 +1,300 @@
+{
+ "persona": "Carlos, 35 anos, entregador de moto",
+ "avaliacoes": [
+  {
+   "id": "1.1",
+   "nota": 0,
+   "comentario": "Sem problema: home_screen tem duas abas (Mapa e Linha do Tempo) com rótulos claros e o botão Registrar; estrutura simples."
+  },
+  {
+   "id": "1.2",
+   "nota": 0,
+   "comentario": "Sem problema: home_screen mantém a BottomNavigationBar e o FAB Registrar nas duas abas; a tela de registro é uma rota à parte com AppBar."
+  },
+  {
+   "id": "1.3",
+   "nota": 0,
+   "comentario": "Sem problema: BottomNavigationBar com ícone e rótulo textual (Mapa, Linha do Tempo) em home_screen."
+  },
+  {
+   "id": "1.4",
+   "nota": 1,
+   "comentario": "timeline_screen: o cartão inteiro é tocável (InkWell) sem indicador visual de que abre detalhes. Marcadores do mapa também só abrem ao toque, sem pista visual."
+  },
+  {
+   "id": "1.5",
+   "nota": 0,
+   "comentario": "Sem problema: navegação de duas abas mais o FAB Registrar; Carlos chega ao registro em um toque."
+  },
+  {
+   "id": "1.6",
+   "nota": 0,
+   "comentario": "Sem problema: toda tela tem saída (AppBar com voltar). new_occurrence_screen só pede confirmação de descarte quando há dados preenchidos."
+  },
+  {
+   "id": "1.7",
+   "nota": 1,
+   "comentario": "home_screen: o ícone view_timeline da aba é pouco reconhecível, embora o rótulo ajude. map_screen: o FAB Minha localização tem só ícone, com tooltip."
+  },
+  {
+   "id": "1.8",
+   "nota": 1,
+   "comentario": "home_screen: a AppBar mostra Voz Urbana nas duas abas. A Linha do Tempo não tem título próprio, então o nome da seção aparece só na barra inferior."
+  },
+  {
+   "id": "1.9",
+   "nota": 0,
+   "comentario": "Sem problema: o FAB Registrar fica visível nas duas abas (home_screen), dando acesso direto à ação principal."
+  },
+  {
+   "id": "1.10",
+   "nota": 0,
+   "comentario": "Sem problema: o detalhe abre com um toque (marcador ou cartão) e o registro começa no FAB."
+  },
+  {
+   "id": "1.11",
+   "nota": 0,
+   "comentario": "Sem problema: AppBar com voltar em new_occurrence_screen e navegação por abas; nenhuma tela sem saída."
+  },
+  {
+   "id": "1.12",
+   "nota": 0,
+   "comentario": "Sem problema: Mapa e Linha do Tempo compartilham o mesmo filtro (filter_bar, OccurrenceProvider), o que facilita alternar entre as visões."
+  },
+  {
+   "id": "1.13",
+   "nota": 0,
+   "comentario": "Sem problema: a BottomNavigationBar permite trocar de seção diretamente em home_screen."
+  },
+  {
+   "id": "1.14",
+   "nota": "N/A",
+   "comentario": "Não se aplica: app móvel, sem mapa do site."
+  },
+  {
+   "id": "1.15",
+   "nota": 1,
+   "comentario": "occurrence_provider: as quatro ocorrências de exemplo (ex.: Buraco na via) aparecem como registros reais, sem indicação de dado de demonstração."
+  },
+  {
+   "id": "1.16",
+   "nota": 1,
+   "comentario": "privacy_notice: OpenStreetMap (Nominatim) é jargão técnico para o público. Os demais textos de tela são simples."
+  },
+  {
+   "id": "1.17",
+   "nota": 1,
+   "comentario": "timeline_screen e map_screen: não há busca por texto, só filtro por período. Para achar um buraco específico é preciso rolar a lista ou o mapa."
+  },
+  {
+   "id": "2.1",
+   "nota": 2,
+   "comentario": "occurrence.dart: a categoria Pavimentação não traz o termo buraco, que Carlos procura. Ele precisa adivinhar o rótulo; o ícone ajuda, mas o nome é técnico."
+  },
+  {
+   "id": "2.2",
+   "nota": 0,
+   "comentario": "Sem problema: formulário em ordem foto, categoria, localização, detalhes e publicar; linha do tempo do mais recente ao mais antigo."
+  },
+  {
+   "id": "3.1",
+   "nota": "N/A",
+   "comentario": "Não se aplica: o app não tem animação de abertura nem Flash."
+  },
+  {
+   "id": "3.2",
+   "nota": 1,
+   "comentario": "Não há busca textual, só filtro de período (filter_bar). Com poucos registros é tolerável, mas Carlos não tem atalho para localizar algo específico."
+  },
+  {
+   "id": "3.3",
+   "nota": "N/A",
+   "comentario": "Não se aplica: impressão é conceito de site ou navegador."
+  },
+  {
+   "id": "3.4",
+   "nota": "N/A",
+   "comentario": "Não se aplica: o app não reproduz música nem sons (não há áudio em lib/)."
+  },
+  {
+   "id": "3.5",
+   "nota": 2,
+   "comentario": "Sem rede, o mapa não exibe tiles e não há aviso (map_screen). Texto e marcadores permanecem; foto que falha vira ícone de erro (occurrence_image). Cenário comum para Carlos."
+  },
+  {
+   "id": "3.6",
+   "nota": 1,
+   "comentario": "Sem ajuste próprio de fonte; o app segue a escala do sistema (nenhum textScaler fixado). Textos de 12px, como endereço e Falta, ficam pequenos ao sol."
+  },
+  {
+   "id": "4.1",
+   "nota": 0,
+   "comentario": "Sem problema: o filtro de período e o Limpar filtro se comportam igual nas duas abas (filter_bar, empty_occurrences)."
+  },
+  {
+   "id": "4.2",
+   "nota": 0,
+   "comentario": "Sem problema: cores, fontes e cartões centralizados em design_system.dart e reutilizados em todas as telas."
+  },
+  {
+   "id": "4.3",
+   "nota": "N/A",
+   "comentario": "Não se aplica como navegador; a compatibilidade de plataforma não se avalia só pelo lib/."
+  },
+  {
+   "id": "4.4",
+   "nota": "N/A",
+   "comentario": "Não se aplica: app móvel, sem resolução 800x600."
+  },
+  {
+   "id": "4.5",
+   "nota": 0,
+   "comentario": "Sem defeito aparente na leitura do código: botões, filtro e publicação têm ação; o app não foi executado."
+  },
+  {
+   "id": "5.1",
+   "nota": 1,
+   "comentario": "new_occurrence_screen e location_service: GPS e permissão são explicados com ação. Mas o aviso de que mapa e endereço dependem de internet não aparece em lugar nenhum."
+  },
+  {
+   "id": "5.2",
+   "nota": 0,
+   "comentario": "Sem problema: o fluxo mínimo exige só foto, categoria e localização; título e descrição são opcionais em Detalhes."
+  },
+  {
+   "id": "5.3",
+   "nota": 2,
+   "comentario": "new_occurrence_screen: Publicar libera com GPS, sem esperar o endereço, que pode ficar null sem nova tentativa."
+  },
+  {
+   "id": "6.1",
+   "nota": 0,
+   "comentario": "Sem problema: data em cada cartão (timeline) e Registrado em no detalhe. URL não se aplica ao app."
+  },
+  {
+   "id": "6.2",
+   "nota": 1,
+   "comentario": "Chips de categoria com ícone e rótulo ajudam. O botão de localização do mapa, porém, é só ícone com tooltip (map_screen)."
+  },
+  {
+   "id": "6.3",
+   "nota": 0,
+   "comentario": "Sem problema: abas e FAB Registrar sempre visíveis; voltar é o caminho óbvio."
+  },
+  {
+   "id": "6.4",
+   "nota": 0,
+   "comentario": "Sem problema: o filtro é compartilhado entre Mapa e Linha do Tempo (OccurrenceProvider); não é preciso lembrar datas entre telas."
+  },
+  {
+   "id": "6.5",
+   "nota": 1,
+   "comentario": "home_screen: a abertura cai no Mapa sem texto dizendo que o app serve para reportar problemas. Só o FAB Registrar comunica essa função."
+  },
+  {
+   "id": "7.1",
+   "nota": 1,
+   "comentario": "Mesmo ponto de 6.2: chips e FAB com rótulo facilitam. Não há atalho para repetir a última categoria ou reportar em poucos toques."
+  },
+  {
+   "id": "7.2",
+   "nota": 0,
+   "comentario": "Sem problema: navegação por abas e voltar não exigem lembrar o caminho percorrido."
+  },
+  {
+   "id": "7.3",
+   "nota": 0,
+   "comentario": "Sem problema: o formulário de registro é autocontido; a categoria escolhida permanece na tela até publicar."
+  },
+  {
+   "id": "8.1",
+   "nota": 0,
+   "comentario": "Sem problema: usa só a família padrão do Material (design_system.dart não define fontes extras)."
+  },
+  {
+   "id": "8.2",
+   "nota": 1,
+   "comentario": "Azul, cinza, verde, vermelho, âmbar e seis cores de categoria. Uso moderado, mas as cores de categoria competem com o azul primário."
+  },
+  {
+   "id": "8.3",
+   "nota": 0,
+   "comentario": "Sem problema: interface direta, com botão de registro grande e objetivo claro para uma tarefa de rua."
+  },
+  {
+   "id": "8.4",
+   "nota": 1,
+   "comentario": "Visual neutro e padrão Material, com cartões de borda cinza fraca. Funcional, mas pouco marcante."
+  },
+  {
+   "id": "8.5",
+   "nota": 1,
+   "comentario": "new_occurrence_screen: a tela de registro é longa, com foto, categorias, localização, detalhes, aviso e botão empilhados. Equilíbrio razoável, mas denso."
+  },
+  {
+   "id": "8.6",
+   "nota": 1,
+   "comentario": "new_occurrence_screen: Publicar, a ação principal, fica no fim da rolagem, depois do aviso de privacidade. A atenção tende a ir para os botões de foto."
+  },
+  {
+   "id": "8.7",
+   "nota": 0,
+   "comentario": "Sem problema: azul primário com cinza e cores de categoria; os contrastes são comentados em design_system.dart."
+  },
+  {
+   "id": "8.8",
+   "nota": 2,
+   "comentario": "Textos de 12px em cinza (endereço, Falta:, aviso de privacidade) são pequenos para leitura ao sol, mesmo com contraste alto (design_system.dart)."
+  },
+  {
+   "id": "8.9",
+   "nota": "N/A",
+   "comentario": "Não se aplica: resolução 800x600 é de navegador web."
+  },
+  {
+   "id": "8.10",
+   "nota": 2,
+   "comentario": "new_occurrence_screen: a tela de registro rola. Com foto (200 px), o botão Publicar sai da tela e exige rolagem com uma mão. Mapa e lista não têm esse problema."
+  },
+  {
+   "id": "8.11",
+   "nota": 0,
+   "comentario": "Sem problema: textos curtos e lista com marcadores em privacy_notice, com frases breves nos avisos."
+  },
+  {
+   "id": "8.12",
+   "nota": 0,
+   "comentario": "Sem problema: os textos ocupam a largura do cartão, compatível com tela de celular."
+  },
+  {
+   "id": "8.13",
+   "nota": 0,
+   "comentario": "Sem problema: ordem lógica no formulário (foto, categoria, localização, detalhes, publicar)."
+  },
+  {
+   "id": "9.1",
+   "nota": 1,
+   "comentario": "Ajuda contextual limitada: Falta: foto, categoria, localização e o aviso de GPS orientam, mas não há dica de como enquadrar o buraco ou escolher a categoria."
+  },
+  {
+   "id": "9.2",
+   "nota": 1,
+   "comentario": "O app não tem índice nem tela de ajuda; baixa prioridade num app de poucas telas."
+  },
+  {
+   "id": "9.3",
+   "nota": 0,
+   "comentario": "Sem problema: Saiba mais abre com um toque (privacy_notice), e a ajuda é rápida."
+  },
+  {
+   "id": "10.1",
+   "nota": 1,
+   "comentario": "Mensagens de GPS são claras, mas Não foi possível abrir a câmera ou a galeria (new_occurrence_screen) não oferece nova tentativa nem orienta o que fazer."
+  },
+  {
+   "id": "10.2",
+   "nota": 3,
+   "comentario": "Publicar não tem desfazer, nem edição ou exclusão na interface. Os registros existem só na memória (privacy_notice) e somem ao fechar o app, mesmo após Ocorrência registrada com sucesso."
+  }
+ ]
+}

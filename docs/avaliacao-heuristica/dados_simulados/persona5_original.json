@@ -1,0 +1,300 @@
+{
+ "persona": "Ana, 29 anos, usuária de leitor de tela",
+ "avaliacoes": [
+  {
+   "id": "1.1",
+   "nota": 1,
+   "comentario": "home_screen: a aba padrão é o Mapa, cujo conteúdo visual não tem resumo em texto; a lista organizada (mais recentes primeiro) fica só na Linha do Tempo (timeline_screen)."
+  },
+  {
+   "id": "1.2",
+   "nota": 0,
+   "comentario": "Sem problema: AppBar, BottomNavigationBar e FAB 'Registrar' ficam fixos em home_screen.dart em todas as abas."
+  },
+  {
+   "id": "1.3",
+   "nota": 0,
+   "comentario": "Sem problema: abas com rótulo textual 'Mapa' e 'Linha do Tempo'; TalkBack anuncia o item selecionado da barra inferior."
+  },
+  {
+   "id": "1.4",
+   "nota": 1,
+   "comentario": "timeline_screen: o card inteiro é InkWell sem dica de ação e se lê em vários focos (chip, data, título, descrição, endereço, foto). privacy_notice: 'Saiba mais' não diz o que abre."
+  },
+  {
+   "id": "1.5",
+   "nota": 2,
+   "comentario": "map_screen: o mapa só tem gestos de pinça e arrasto, sem controles de zoom nem alternativa de foco, difíceis com TalkBack; o FilterBar vem depois do mapa no Stack, sem ordem de foco explícita."
+  },
+  {
+   "id": "1.6",
+   "nota": 0,
+   "comentario": "Sem problema: o Voltar do sistema fecha a tela de registro (PopScope pede confirmação) e o detalhe fecha com gesto voltar; não há tela sem saída."
+  },
+  {
+   "id": "1.7",
+   "nota": 1,
+   "comentario": "occurrence_image: todas as fotos recebem o rótulo genérico 'Foto da ocorrência' e o autor não informa descrição da imagem. Os ícones de navegação têm texto ao lado."
+  },
+  {
+   "id": "1.8",
+   "nota": 1,
+   "comentario": "home_screen: o AppBar 'Voz Urbana' é o mesmo no Mapa e na Linha do Tempo, sem cabeçalho de tela; Ana identifica a página só pelo item selecionado da barra inferior."
+  },
+  {
+   "id": "1.9",
+   "nota": 0,
+   "comentario": "Sem problema: registrar (FAB) e alternar entre Mapa e Linha do Tempo estão sempre a um toque em home_screen.dart."
+  },
+  {
+   "id": "1.10",
+   "nota": 0,
+   "comentario": "Sem problema: registrar leva 1 toque; ver detalhe leva 2 (aba e card, ou marcador do mapa)."
+  },
+  {
+   "id": "1.11",
+   "nota": 1,
+   "comentario": "occurrence_detail_sheet: o detalhe não tem botão Fechar; sai só pelo gesto voltar ou por toque fora do painel, que não é focável no TalkBack."
+  },
+  {
+   "id": "1.12",
+   "nota": 1,
+   "comentario": "occurrence_detail_sheet: não há ação para ver a ocorrência no mapa a partir da lista, nem o caminho inverso; páginas relacionadas não se conectam."
+  },
+  {
+   "id": "1.13",
+   "nota": 0,
+   "comentario": "Sem problema: troca de seção pela barra inferior, sempre visível em home_screen.dart."
+  },
+  {
+   "id": "1.14",
+   "nota": "N/A",
+   "comentario": "App móvel com duas abas; mapa do site é recurso de site e não se aplica."
+  },
+  {
+   "id": "1.15",
+   "nota": 0,
+   "comentario": "Sem problema: título e categorias (ex.: Pavimentação, Iluminação Pública) refletem o registro de problemas urbanos."
+  },
+  {
+   "id": "1.16",
+   "nota": 0,
+   "comentario": "Sem problema: linguagem simples em português nos formulários e mensagens de erro."
+  },
+  {
+   "id": "1.17",
+   "nota": 1,
+   "comentario": "timeline_screen: não há busca textual nem filtro por categoria, só filtro de período (filter_bar). Ana precisa percorrer toda a lista para achar uma ocorrência específica."
+  },
+  {
+   "id": "2.1",
+   "nota": 2,
+   "comentario": "privacy_notice: 'Nominatim' e 'OpenStreetMap' são jargão técnico. main.dart não define localizationsDelegates nem supportedLocales, então o seletor de período (filter_bar) sai em inglês."
+  },
+  {
+   "id": "2.2",
+   "nota": 1,
+   "comentario": "timeline_screen: a ordem de leitura do card começa pelo chip de categoria e pela data; o título, que identifica a ocorrência, vem depois."
+  },
+  {
+   "id": "3.1",
+   "nota": "N/A",
+   "comentario": "Não há animação de abertura nem intro no código (main.dart, home_screen.dart); Flash não se aplica."
+  },
+  {
+   "id": "3.2",
+   "nota": 1,
+   "comentario": "timeline_screen: sem campo de busca, só filtro por período (filter_bar). Com muitas ocorrências, Ana depende de rolar a lista inteira."
+  },
+  {
+   "id": "3.3",
+   "nota": "N/A",
+   "comentario": "App móvel: não há recurso de impressão nem layout que dependa dela."
+  },
+  {
+   "id": "3.4",
+   "nota": "N/A",
+   "comentario": "O app não reproduz música nem som, conforme o código lido."
+  },
+  {
+   "id": "3.5",
+   "nota": 1,
+   "comentario": "occurrence_image: se a foto não carrega, o Semantics(image) ainda anuncia 'Foto da ocorrência' sem indicar a falha. Texto do card e do detalhe continua acessível."
+  },
+  {
+   "id": "3.6",
+   "nota": 0,
+   "comentario": "Sem problema: nenhum textScaler fixo no código; o texto segue a escala de fonte configurada no sistema Android."
+  },
+  {
+   "id": "4.1",
+   "nota": 0,
+   "comentario": "Sem problema: 'Registrar', 'Limpar filtro' e 'Remover foto' seguem o mesmo padrão de rótulo e ação nas telas."
+  },
+  {
+   "id": "4.2",
+   "nota": 0,
+   "comentario": "Sem problema: cores, botões e espaçamentos centralizados em theme/design_system.dart."
+  },
+  {
+   "id": "4.3",
+   "nota": "N/A",
+   "comentario": "Compatibilidade com navegadores não se aplica; compatibilidade com leitores de tela não dá para julgar só pelo código."
+  },
+  {
+   "id": "4.4",
+   "nota": "N/A",
+   "comentario": "Resolução 800x600 é de navegador web e não se aplica a app Android."
+  },
+  {
+   "id": "4.5",
+   "nota": 1,
+   "comentario": "map_screen: ao obter a localização com sucesso o mapa recentraliza sem anúncio; durante a busca o FAB fica desativado sem informar o motivo."
+  },
+  {
+   "id": "5.1",
+   "nota": 1,
+   "comentario": "new_occurrence_screen: GPS e localização têm mensagem e ação claras; falha da câmera mostra só 'Não foi possível abrir a câmera ou a galeria', sem dizer que pode ser permissão."
+  },
+  {
+   "id": "5.2",
+   "nota": 3,
+   "comentario": "new_occurrence_screen: a foto é obrigatória (lista 'Falta: foto') e não há orientação para capturar sem ver; a alternativa é a galeria, mas nada informa isso a quem não enxerga."
+  },
+  {
+   "id": "5.3",
+   "nota": 2,
+   "comentario": "new_occurrence_screen: 'Remover foto' apaga na hora, sem confirmação; 'Publicar' torna a ocorrência pública sem uma revisão final antes."
+  },
+  {
+   "id": "6.1",
+   "nota": 0,
+   "comentario": "Sem problema: a data de registro aparece no card e em 'Registrado em' do detalhe; URL não se aplica a app móvel."
+  },
+  {
+   "id": "6.2",
+   "nota": 0,
+   "comentario": "Sem problema: botões e chips têm rótulo de texto, então não dependem de reconhecer ícones."
+  },
+  {
+   "id": "6.3",
+   "nota": 0,
+   "comentario": "Sem problema: poucas telas, cada uma com título próprio ('Registrar ocorrência') e voltar do sistema."
+  },
+  {
+   "id": "6.4",
+   "nota": 0,
+   "comentario": "Sem problema: o filtro de período é compartilhado entre Mapa e Linha do Tempo (filter_bar, provider), sem redigitar."
+  },
+  {
+   "id": "6.5",
+   "nota": 1,
+   "comentario": "home_screen: nenhum texto na abertura explica que o app registra problemas urbanos; essa explicação só aparece no aviso de privacidade do formulário."
+  },
+  {
+   "id": "7.1",
+   "nota": 0,
+   "comentario": "Mesmo caso de 6.2: botões e chips têm rótulo de texto."
+  },
+  {
+   "id": "7.2",
+   "nota": 0,
+   "comentario": "Mesmo caso de 6.3: navegação simples por duas abas e voltar do sistema."
+  },
+  {
+   "id": "7.3",
+   "nota": 0,
+   "comentario": "Mesmo caso de 6.4: filtro de período compartilhado entre as abas."
+  },
+  {
+   "id": "8.1",
+   "nota": 0,
+   "comentario": "Sem problema: usa só a fonte padrão do Material; theme/design_system.dart não define fontFamily."
+  },
+  {
+   "id": "8.2",
+   "nota": 0,
+   "comentario": "Sem problema: as cores de categoria não carregam informação única; o rótulo textual acompanha cada uma."
+  },
+  {
+   "id": "8.3",
+   "nota": 0,
+   "comentario": "Sem problema: estrutura simples de formulário e lista, adequada ao registro cidadão."
+  },
+  {
+   "id": "8.4",
+   "nota": "N/A",
+   "comentario": "Atratividade visual não pode ser julgada por uma persona cega; o código não mostra nada além do que o TalkBack lê."
+  },
+  {
+   "id": "8.5",
+   "nota": "N/A",
+   "comentario": "Equilíbrio visual do layout não se aplica a quem usa leitor de tela."
+  },
+  {
+   "id": "8.6",
+   "nota": "N/A",
+   "comentario": "Direcionamento do olhar é visual; a ordem de foco do TalkBack é avaliada em outros itens."
+  },
+  {
+   "id": "8.7",
+   "nota": "N/A",
+   "comentario": "Combinação de cores é visual e não se aplica a uma persona cega."
+  },
+  {
+   "id": "8.8",
+   "nota": "N/A",
+   "comentario": "Legibilidade visual não se aplica; a leitura é por voz, e a qualidade dos rótulos está nos itens de Semantics."
+  },
+  {
+   "id": "8.9",
+   "nota": "N/A",
+   "comentario": "Resolução 800x600 é de navegador web e não se aplica a app Android."
+  },
+  {
+   "id": "8.10",
+   "nota": "N/A",
+   "comentario": "Rolagem vertical é esperada em tela de celular; o formulário usa SingleChildScrollView."
+  },
+  {
+   "id": "8.11",
+   "nota": 1,
+   "comentario": "privacy_notice, occurrence_detail_sheet e new_occurrence_screen: títulos ('Privacidade e LGPD', 'Categoria', 'Detalhes (opcional)') não usam Semantics header, então Ana não navega por cabeçalhos."
+  },
+  {
+   "id": "8.12",
+   "nota": "N/A",
+   "comentario": "Largura de linha é fator visual; a leitura por TalkBack não depende dela."
+  },
+  {
+   "id": "8.13",
+   "nota": 0,
+   "comentario": "Sem problema: ordem foto, categoria, localização, detalhes e publicar em new_occurrence_screen.dart segue a sequência natural."
+  },
+  {
+   "id": "9.1",
+   "nota": 1,
+   "comentario": "new_occurrence_screen: não explica o que é 'Título breve' (vira o nome da categoria se vazio) nem orienta a foto; só há o aviso de privacidade."
+  },
+  {
+   "id": "9.2",
+   "nota": "N/A",
+   "comentario": "O app não tem índice de ajuda nem documentação para consulta."
+  },
+  {
+   "id": "9.3",
+   "nota": "N/A",
+   "comentario": "O app não tem ajuda sob demanda; 'Saiba mais' é aviso de privacidade."
+  },
+  {
+   "id": "10.1",
+   "nota": 1,
+   "comentario": "location_service: mensagens de GPS e permissão são claras, mas 'Não foi possível obter a localização' não diz a causa. 'Falta: foto, categoria' vem depois do botão Publicar desativado."
+  },
+  {
+   "id": "10.2",
+   "nota": 2,
+   "comentario": "new_occurrence_screen: não há desfazer para 'Remover foto', nem edição ou exclusão de ocorrência publicada; só o descarte do formulário pede confirmação."
+  }
+ ]
+}

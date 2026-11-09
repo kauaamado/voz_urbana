@@ -1,0 +1,300 @@
+{
+ "persona": "Dona Marlene, 68 anos, aposentada",
+ "avaliacoes": [
+  {
+   "id": "1.1",
+   "nota": 0,
+   "comentario": "Sem problema: três áreas (Mapa, Linha do Tempo e Registrar) com organização simples e lógica (home_screen)."
+  },
+  {
+   "id": "1.2",
+   "nota": 0,
+   "comentario": "Sem problema: home_screen mantém AppBar e barra inferior fixas nas duas abas."
+  },
+  {
+   "id": "1.3",
+   "nota": 0,
+   "comentario": "Sem problema: a barra inferior tem rótulos de texto 'Mapa' e 'Linha do Tempo' ao lado dos ícones (home_screen)."
+  },
+  {
+   "id": "1.4",
+   "nota": 1,
+   "comentario": "timeline_screen: o cartão inteiro é tocável (InkWell), mas sem pista visual de que abre o detalhe; o usuário descobre tocando. Navegação principal tem rótulos de texto."
+  },
+  {
+   "id": "1.5",
+   "nota": 0,
+   "comentario": "Sem problema: duas abas e um botão 'Registrar' com texto; o caminho é curto."
+  },
+  {
+   "id": "1.6",
+   "nota": 0,
+   "comentario": "Sem problema: new_occurrence_screen tem seta de voltar; ao sair com dados preenchidos, pede confirmação antes de descartar."
+  },
+  {
+   "id": "1.7",
+   "nota": 1,
+   "comentario": "map_screen: o botão 'Minha localização' é só ícone (my_location) e o nome aparece apenas no tooltip, ao segurar. Os ícones das abas têm texto."
+  },
+  {
+   "id": "1.8",
+   "nota": 1,
+   "comentario": "map_screen não tem título nem texto explicando o que é o mapa; só aparece a AppBar 'Voz Urbana'. A Linha do Tempo também não se apresenta."
+  },
+  {
+   "id": "1.9",
+   "nota": 1,
+   "comentario": "O aviso de privacidade (privacy_notice) só aparece dentro do formulário; não há item de navegação para informações gerais do app."
+  },
+  {
+   "id": "1.10",
+   "nota": 0,
+   "comentario": "Sem problema: registrar leva um toque (FAB); ver detalhe leva um toque no pino ou no cartão da lista."
+  },
+  {
+   "id": "1.11",
+   "nota": 0,
+   "comentario": "Sem problema: AppBar com voltar, barra inferior e detalhes que fecham ao arrastar ou tocar fora."
+  },
+  {
+   "id": "1.12",
+   "nota": 0,
+   "comentario": "Sem problema: occurrence_detail_sheet abre tanto do Mapa quanto da Linha do Tempo; as abas levam entre as duas."
+  },
+  {
+   "id": "1.13",
+   "nota": 0,
+   "comentario": "Sem problema: a barra inferior dá acesso direto às duas seções."
+  },
+  {
+   "id": "1.14",
+   "nota": "N/A",
+   "comentario": "Mapa do site é recurso de site; não se aplica a app móvel."
+  },
+  {
+   "id": "1.15",
+   "nota": 0,
+   "comentario": "Sem problema: título, mapa e formulário refletem o objetivo de registrar problemas urbanos."
+  },
+  {
+   "id": "1.16",
+   "nota": 2,
+   "comentario": "privacy_notice: 'OpenStreetMap', 'Nominatim', 'LGPD' e 'protótipo' em texto de 12px exigem vocabulário técnico que a persona pode não ter."
+  },
+  {
+   "id": "1.17",
+   "nota": 1,
+   "comentario": "Não há busca no app; achar uma ocorrência depende de pino no mapa ou da lista com filtro de datas (filter_bar). Funciona, mas é limitado."
+  },
+  {
+   "id": "2.1",
+   "nota": 1,
+   "comentario": "'Ocorrência', 'Pavimentação', 'Saneamento' e 'Patrimônio' são termos de sistema; 'Registrar' e 'Falta: foto' são claros (occurrence, category_chips)."
+  },
+  {
+   "id": "2.2",
+   "nota": 0,
+   "comentario": "Sem problema: formulário segue ordem natural (foto, categoria, localização, detalhes, publicar); lista mostra o mais recente primeiro."
+  },
+  {
+   "id": "3.1",
+   "nota": "N/A",
+   "comentario": "Não há animação de abertura no código; Flash não se aplica a app móvel."
+  },
+  {
+   "id": "3.2",
+   "nota": 1,
+   "comentario": "Sem campo de busca interno (map_screen, timeline_screen); só há filtro por período. Com poucos dados é aceitável, mas não há outra forma de achar um tema."
+  },
+  {
+   "id": "3.3",
+   "nota": "N/A",
+   "comentario": "Impressão de página não se aplica a app móvel."
+  },
+  {
+   "id": "3.4",
+   "nota": "N/A",
+   "comentario": "Não há áudio ou música no código do app."
+  },
+  {
+   "id": "3.5",
+   "nota": 1,
+   "comentario": "occurrence_image: se a foto não carrega, mostra só um ícone broken_image sem texto; no mapa, o pino perde o ícone da categoria. O texto da ocorrência permanece."
+  },
+  {
+   "id": "3.6",
+   "nota": 2,
+   "comentario": "Nenhum controle de fonte no app (main, design_system); depende só do sistema. Textos de 12px (occurrence_detail_sheet, privacy_notice) ficam pequenos para a persona."
+  },
+  {
+   "id": "4.1",
+   "nota": 0,
+   "comentario": "Sem problema: 'Limpar filtro' tem o mesmo efeito no chip e no estado vazio (filter_bar, empty_occurrences); botões seguem o mesmo padrão."
+  },
+  {
+   "id": "4.2",
+   "nota": 0,
+   "comentario": "Sem problema: cores, cartões e botões vêm do design_system de forma consistente entre as telas."
+  },
+  {
+   "id": "4.3",
+   "nota": "N/A",
+   "comentario": "Compatibilidade de navegador não se aplica; a compatibilidade de plataforma depende de configuração fora de lib/."
+  },
+  {
+   "id": "4.4",
+   "nota": "N/A",
+   "comentario": "Resolução 800x600 é critério de site; não se aplica a app móvel."
+  },
+  {
+   "id": "4.5",
+   "nota": 0,
+   "comentario": "Sem problema aparente: botões e ações têm tratadores no código; não foi possível testar em execução."
+  },
+  {
+   "id": "5.1",
+   "nota": 1,
+   "comentario": "location_service mostra motivo e ação (Ativar GPS, Abrir configurações), mas a permissão é pedida ao abrir o formulário, sem explicação antes (new_occurrence_screen)."
+  },
+  {
+   "id": "5.2",
+   "nota": 2,
+   "comentario": "Exige foto, categoria e GPS. Para a persona, usar a câmera e localizar sem ajuda é barreira. Nada no app explica como tirar a foto."
+  },
+  {
+   "id": "5.3",
+   "nota": 2,
+   "comentario": "'Remover foto' apaga a imagem na hora, sem confirmação (new_occurrence_screen). Para quem tem medo de estragar algo, é um erro fácil de cometer e sem volta."
+  },
+  {
+   "id": "6.1",
+   "nota": 0,
+   "comentario": "Sem problema: data e hora do registro aparecem na lista e no detalhe; URL não se aplica ao app."
+  },
+  {
+   "id": "6.2",
+   "nota": 2,
+   "comentario": "map_screen: pinos mostram só foto ou ícone da categoria (lightbulb, shield, account_balance); sem legenda, é preciso tocar em cada pino para saber o tipo."
+  },
+  {
+   "id": "6.3",
+   "nota": 0,
+   "comentario": "Sem problema: rótulos das abas e título da AppBar permitem se localizar sem lembrar o caminho."
+  },
+  {
+   "id": "6.4",
+   "nota": 0,
+   "comentario": "Sem problema: o filtro de período é compartilhado entre Mapa e Linha do Tempo (provider); não exige lembrar dados entre telas."
+  },
+  {
+   "id": "6.5",
+   "nota": 1,
+   "comentario": "home_screen não diz para que serve o app; a finalidade só aparece no aviso de privacidade e no título do formulário. O mapa não tem texto explicativo."
+  },
+  {
+   "id": "7.1",
+   "nota": 1,
+   "comentario": "Sem atalhos, mas o fluxo é curto (FAB, foto, categoria, publicar). O esforço maior está nos pinos com ícone, já apontado em 6.2."
+  },
+  {
+   "id": "7.2",
+   "nota": 0,
+   "comentario": "Sem problema: mesma leitura de 6.3; abas e AppBar deixam claro o caminho."
+  },
+  {
+   "id": "7.3",
+   "nota": 0,
+   "comentario": "Sem problema: os dados do formulário ficam na tela; o endereço aparece junto com a localização."
+  },
+  {
+   "id": "8.1",
+   "nota": 0,
+   "comentario": "Sem problema: usa uma única família de fonte padrão; o design_system não define outras."
+  },
+  {
+   "id": "8.2",
+   "nota": 1,
+   "comentario": "Seis cores de categoria somadas às cores de estado. É razoável, mas nos pinos as cores não têm legenda."
+  },
+  {
+   "id": "8.3",
+   "nota": 1,
+   "comentario": "Visual Material simples e adequado ao objetivo; o texto secundário de 12px não favorece o público de 68 anos."
+  },
+  {
+   "id": "8.4",
+   "nota": 1,
+   "comentario": "Aparência genérica do Material, sem elementos que chamem a atenção da persona; funcional, mas sem apelo."
+  },
+  {
+   "id": "8.5",
+   "nota": 0,
+   "comentario": "Sem problema: layout leve, com FAB e barra de filtro sobre o mapa sem cobrir o conteúdo principal."
+  },
+  {
+   "id": "8.6",
+   "nota": 2,
+   "comentario": "new_occurrence_screen: o botão 'Publicar' fica no fim da rolagem, depois de localização, detalhes e aviso. Com fonte ampliada, a persona precisa rolar para achar a ação principal."
+  },
+  {
+   "id": "8.7",
+   "nota": 0,
+   "comentario": "Sem problema: azul sobre branco e cinza escuro para textos secundários (design_system) têm contraste adequado."
+  },
+  {
+   "id": "8.8",
+   "nota": 2,
+   "comentario": "Textos de 12px em cinza (endereço, 'Registrado em', aviso de privacidade, 'Falta:') em occurrence_detail_sheet e new_occurrence_screen são pequenos para leitura lenta."
+  },
+  {
+   "id": "8.9",
+   "nota": "N/A",
+   "comentario": "Resolução 800x600 é critério de tela de computador; não se aplica a app móvel."
+  },
+  {
+   "id": "8.10",
+   "nota": 1,
+   "comentario": "O formulário rola na vertical por ter muitos blocos. É aceitável, mas 'Publicar' fica longe do topo, em especial com fonte ampliada."
+  },
+  {
+   "id": "8.11",
+   "nota": 0,
+   "comentario": "Sem problema: o aviso de privacidade usa frases curtas e tópicos (privacy_notice)."
+  },
+  {
+   "id": "8.12",
+   "nota": 0,
+   "comentario": "Sem problema: os textos se quebram naturalmente na largura de tela de celular."
+  },
+  {
+   "id": "8.13",
+   "nota": 0,
+   "comentario": "Sem problema: campos em ordem lógica; título e descrição opcionais ficam recolhidos em 'Detalhes (opcional)'."
+  },
+  {
+   "id": "9.1",
+   "nota": 1,
+   "comentario": "Ajuda contextual só em alguns pontos (aviso 'Saiba mais', mensagens de GPS). Nada explica como tirar a foto ou escolher categoria no próprio passo."
+  },
+  {
+   "id": "9.2",
+   "nota": 1,
+   "comentario": "O app não tem índice nem tela de ajuda; baixa prioridade num app de poucas telas."
+  },
+  {
+   "id": "9.3",
+   "nota": 0,
+   "comentario": "Sem problema: a ajuda existente é local e abre na hora (bottom sheet de privacidade), sem carregamento."
+  },
+  {
+   "id": "10.1",
+   "nota": 1,
+   "comentario": "Mensagens de GPS são claras, mas 'Não foi possível abrir a câmera ou a galeria.' não diz o que fazer, nem oferece ação (new_occurrence_screen)."
+  },
+  {
+   "id": "10.2",
+   "nota": 3,
+   "comentario": "Não há como desfazer depois de publicar: nenhuma tela edita ou exclui ocorrência. 'Remover foto' também não volta. Só 'Descartar' protege antes de publicar; grave para quem teme errar."
+  }
+ ]
+}

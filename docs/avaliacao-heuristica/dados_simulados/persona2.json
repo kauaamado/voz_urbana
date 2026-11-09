@@ -1,0 +1,300 @@
+{
+ "persona": "Lucas, 20 anos, universitário",
+ "avaliacoes": [
+  {
+   "id": "1.1",
+   "nota": 0,
+   "comentario": "Sem problema: lista ordenada do mais recente para o mais antigo (occurrence_provider) e mapa com marcadores claros."
+  },
+  {
+   "id": "1.2",
+   "nota": 0,
+   "comentario": "Sem problema: barra inferior fixa em home_screen; barra superior e botão Registrar aparecem nas duas abas."
+  },
+  {
+   "id": "1.3",
+   "nota": 0,
+   "comentario": "Sem problema: abas com ícone e rótulo ('Mapa', 'Linha do Tempo') em home_screen."
+  },
+  {
+   "id": "1.4",
+   "nota": 1,
+   "comentario": "timeline_screen: o cartão inteiro é tocável (InkWell), mas não tem indicação visual de que abre detalhes; o usuário descobre tocando."
+  },
+  {
+   "id": "1.5",
+   "nota": 0,
+   "comentario": "Sem problema: duas abas e um botão de registro; estrutura simples de entender."
+  },
+  {
+   "id": "1.6",
+   "nota": 0,
+   "comentario": "Sem problema: não há becos sem saída; a tela de registro volta pela seta ou gesto, com confirmação se houver dados preenchidos."
+  },
+  {
+   "id": "1.7",
+   "nota": 1,
+   "comentario": "occurrence_marker: marcadores mostram só foto ou ícone da categoria, sem rótulo visível; o significado depende de cor e ícone sem legenda no mapa."
+  },
+  {
+   "id": "1.8",
+   "nota": 1,
+   "comentario": "home_screen: a barra superior é sempre 'Voz Urbana'; as abas não têm título próprio, então o objetivo de cada tela fica pouco explícito."
+  },
+  {
+   "id": "1.9",
+   "nota": 1,
+   "comentario": "privacy_notice: a informação de privacidade só aparece dentro do formulário; a navegação principal não tem atalho para ela."
+  },
+  {
+   "id": "1.10",
+   "nota": 0,
+   "comentario": "Sem problema: ver um detalhe leva 2 toques (marcador ou cartão); registrar leva cerca de 4 toques."
+  },
+  {
+   "id": "1.11",
+   "nota": 0,
+   "comentario": "Sem problema: a seta de voltar e as abas levam sempre ao nível anterior ou à aba principal."
+  },
+  {
+   "id": "1.12",
+   "nota": 1,
+   "comentario": "timeline_screen: o cartão não leva ao ponto no mapa e a ficha em occurrence_detail_sheet não tem ação 'Ver no mapa'."
+  },
+  {
+   "id": "1.13",
+   "nota": 0,
+   "comentario": "Sem problema: Mapa e Linha do Tempo ficam na barra inferior, sempre visível."
+  },
+  {
+   "id": "1.14",
+   "nota": "N/A",
+   "comentario": "Mapa do site é conceito de web; o app tem só duas abas."
+  },
+  {
+   "id": "1.15",
+   "nota": 0,
+   "comentario": "Sem problema: o conteúdo (ocorrências urbanas com foto, categoria e local) corresponde ao objetivo do app."
+  },
+  {
+   "id": "1.16",
+   "nota": 0,
+   "comentario": "Sem problema: textos em português simples, adequados a um app de registro urbano para jovens adultos."
+  },
+  {
+   "id": "1.17",
+   "nota": 2,
+   "comentario": "timeline_screen e map_screen não têm busca nem filtro por categoria; só há filtro de período (filter_bar), então achar um problema específico exige rolar a lista."
+  },
+  {
+   "id": "2.1",
+   "nota": 1,
+   "comentario": "privacy_notice e address_service expõem 'Nominatim' e 'LGPD'; são termos de sistema que o Lucas não usa. 'Falta: foto, categoria' também soa formal."
+  },
+  {
+   "id": "2.2",
+   "nota": 0,
+   "comentario": "Sem problema: formulário segue foto, categoria, localização, detalhes e publicar; lista ordenada por data decrescente."
+  },
+  {
+   "id": "3.1",
+   "nota": "N/A",
+   "comentario": "Não há animação Flash em app Flutter."
+  },
+  {
+   "id": "3.2",
+   "nota": 2,
+   "comentario": "Sem busca interna em timeline_screen nem map_screen; quem procura um problema específico não tem atalho por texto."
+  },
+  {
+   "id": "3.3",
+   "nota": "N/A",
+   "comentario": "Impressão de página é recurso de navegador; não se aplica a app móvel."
+  },
+  {
+   "id": "3.4",
+   "nota": "N/A",
+   "comentario": "O app não toca música nem som, então o item não se aplica."
+  },
+  {
+   "id": "3.5",
+   "nota": 0,
+   "comentario": "Análogo móvel: se a foto não carrega, occurrence_image mostra um ícone e o texto do registro continua visível (sem quebrar a tela)."
+  },
+  {
+   "id": "3.6",
+   "nota": 1,
+   "comentario": "Não há configuração de fonte no app; o tamanho segue só a escala do sistema, e endereço e data usam 12 px fixos."
+  },
+  {
+   "id": "4.1",
+   "nota": 0,
+   "comentario": "Sem problema: 'Remover foto' e 'Descartar' usam vermelho de erro; 'Registrar' é sempre o mesmo FAB; ações iguais se comportam igual."
+  },
+  {
+   "id": "4.2",
+   "nota": 0,
+   "comentario": "Sem problema: cores, fontes e cartões vêm do design_system; o layout é o mesmo nas abas."
+  },
+  {
+   "id": "4.3",
+   "nota": "N/A",
+   "comentario": "Compatibilidade entre navegadores não se aplica; não dá para julgar Android e iOS só pelo código."
+  },
+  {
+   "id": "4.4",
+   "nota": "N/A",
+   "comentario": "Resolução 800x600 é de desktop; em celular a largura é a do próprio aparelho."
+  },
+  {
+   "id": "4.5",
+   "nota": 0,
+   "comentario": "Sem problema aparente na leitura do código: botões, formulário, GPS e filtro têm ação e retorno (não rodei o app)."
+  },
+  {
+   "id": "5.1",
+   "nota": 1,
+   "comentario": "new_occurrence_screen: o GPS e a permissão só são explicados depois, no card de localização; o pedido de permissão surge ao abrir a tela."
+  },
+  {
+   "id": "5.2",
+   "nota": 0,
+   "comentario": "Sem problema: registrar exige foto, uma categoria e a localização automática, habilidades básicas para o público."
+  },
+  {
+   "id": "5.3",
+   "nota": 3,
+   "comentario": "new_occurrence_screen: a localização é capturada ao abrir a tela (_getLocation em initState) e não é atualizada ao publicar; se a foto for tirada em outro lugar, sai com local errado."
+  },
+  {
+   "id": "6.1",
+   "nota": 0,
+   "comentario": "Sem problema: cada cartão e a ficha mostram a data de registro; URL não se aplica a app."
+  },
+  {
+   "id": "6.2",
+   "nota": 0,
+   "comentario": "Sem problema: FAB 'Registrar' tem rótulo e ícone; câmera e galeria têm texto; categorias têm ícone e nome."
+  },
+  {
+   "id": "6.3",
+   "nota": 0,
+   "comentario": "Sem problema: barra inferior e seta de voltar mantêm o caminho visível."
+  },
+  {
+   "id": "6.4",
+   "nota": 0,
+   "comentario": "Sem problema: o filtro de período é compartilhado entre Mapa e Linha do Tempo (occurrence_provider); a localização fica visível no formulário."
+  },
+  {
+   "id": "6.5",
+   "nota": 0,
+   "comentario": "Sem problema: o botão 'Registrar' e o mapa com marcadores deixam claro o que o app faz."
+  },
+  {
+   "id": "7.1",
+   "nota": 1,
+   "comentario": "Sem atalhos para uso repetido: nada lembra a última categoria nem permite repetir um registro; cada ocorrência percorre o fluxo completo."
+  },
+  {
+   "id": "7.2",
+   "nota": 0,
+   "comentario": "Sem problema: abas e seta de voltar permitem se localizar sem lembrar o caminho."
+  },
+  {
+   "id": "7.3",
+   "nota": 0,
+   "comentario": "Sem problema: o filtro de período é mantido ao trocar de aba; o usuário não precisa lembrar dados entre telas."
+  },
+  {
+   "id": "8.1",
+   "nota": 0,
+   "comentario": "Sem problema: usa só a família padrão do Material; design_system não define outra fonte."
+  },
+  {
+   "id": "8.2",
+   "nota": 0,
+   "comentario": "Sem problema: azul como cor principal, cinza de apoio e cores das categorias apenas em ícones e marcadores."
+  },
+  {
+   "id": "8.3",
+   "nota": 0,
+   "comentario": "Sem problema: visual limpo e direto, adequado a um registro cidadão."
+  },
+  {
+   "id": "8.4",
+   "nota": 1,
+   "comentario": "design_system: Material padrão com cartões brancos; funciona, mas fica genérico para quem espera o visual de apps modernos."
+  },
+  {
+   "id": "8.5",
+   "nota": 0,
+   "comentario": "Sem problema: layout em coluna única, leve e equilibrado nas duas abas."
+  },
+  {
+   "id": "8.6",
+   "nota": 0,
+   "comentario": "Sem problema: o FAB 'Registrar' e os marcadores coloridos chamam atenção; 'Publicar' é o botão de maior destaque no formulário."
+  },
+  {
+   "id": "8.7",
+   "nota": 0,
+   "comentario": "Sem problema: azul, branco e cinza com contraste adequado, segundo os comentários do design_system."
+  },
+  {
+   "id": "8.8",
+   "nota": 1,
+   "comentario": "Endereço, data e o texto 'Falta:' usam 12 px em cinza (timeline_screen, new_occurrence_screen); legível, mas pequeno para uso na rua."
+  },
+  {
+   "id": "8.9",
+   "nota": "N/A",
+   "comentario": "Resolução 800x600 é de navegador de desktop; não se aplica ao app."
+  },
+  {
+   "id": "8.10",
+   "nota": 1,
+   "comentario": "new_occurrence_screen: o botão 'Publicar' fica depois de categoria, localização, detalhes e aviso de privacidade; em celular pequeno exige rolagem."
+  },
+  {
+   "id": "8.11",
+   "nota": 0,
+   "comentario": "Sem problema: avisos de privacidade em tópicos curtos com ícones (privacy_notice)."
+  },
+  {
+   "id": "8.12",
+   "nota": 0,
+   "comentario": "Sem problema: textos seguem a largura do celular; descrições longas ocupam o cartão inteiro na lista, sem limite de linhas."
+  },
+  {
+   "id": "8.13",
+   "nota": 0,
+   "comentario": "Sem problema: campos na ordem título e descrição, dentro de um fluxo lógico."
+  },
+  {
+   "id": "9.1",
+   "nota": 0,
+   "comentario": "Sem problema: a ajuda aparece na tarefa: aviso de privacidade, mensagens de localização com ação e 'Falta:' abaixo do botão."
+  },
+  {
+   "id": "9.2",
+   "nota": 1,
+   "comentario": "O app não tem índice nem tela de ajuda; baixa prioridade num app de poucas telas."
+  },
+  {
+   "id": "9.3",
+   "nota": 0,
+   "comentario": "Sem problema: a ajuda é inline e aparece na hora, sem carregamento."
+  },
+  {
+   "id": "10.1",
+   "nota": 0,
+   "comentario": "Sem problema: mensagens como 'O GPS está desativado. Ative-o para registrar a ocorrência.' são claras e trazem ação."
+  },
+  {
+   "id": "10.2",
+   "nota": 3,
+   "comentario": "Não há como editar nem excluir ocorrência publicada (occurrence_provider só adiciona); erro de título ou local fica sem correção. Só existe confirmação antes de descartar o formulário."
+  }
+ ]
+}
