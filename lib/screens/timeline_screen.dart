@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import '../models/occurrence.dart';
 import '../providers/occurrence_provider.dart';
 import '../theme/design_system.dart';
-import 'package:intl/intl.dart';
+import '../widgets/empty_occurrences.dart';
+import '../widgets/filter_bar.dart';
+import '../widgets/occurrence_detail_sheet.dart';
+import '../widgets/occurrence_image.dart';
 
 class TimelineScreen extends StatelessWidget {
   const TimelineScreen({super.key});
@@ -11,70 +16,21 @@ class TimelineScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        _buildFilterHeader(context),
+        const FilterBar(),
         Expanded(
           child: Consumer<OccurrenceProvider>(
             builder: (context, provider, child) {
               final occurrences = provider.occurrences;
 
               if (occurrences.isEmpty) {
-                return const Center(
-                  child: Text('Nenhuma ocorrência registrada.'),
-                );
+                return EmptyOccurrences(filtered: provider.hasActiveFilter);
               }
 
               return ListView.builder(
                 padding: const EdgeInsets.only(bottom: 80), // Espaço pro FAB
                 itemCount: occurrences.length,
-                itemBuilder: (context, index) {
-                  final occurrence = occurrences[index];
-                  return Card(
-                    // Seguindo o Design System: sem sombras pesadas
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(DesignSystem.cardRadius),
-                      side: BorderSide(color: Colors.grey.shade200),
-                    ),
-                    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    child: Padding(
-                      padding: DesignSystem.cardPadding,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Chip(
-                                label: Text(
-                                  occurrence.category.label,
-                                  style: const TextStyle(fontSize: 12),
-                                ),
-                                backgroundColor: DesignSystem.tertiary,
-                                side: BorderSide.none,
-                              ),
-                              Text(
-                                DateFormat('dd/MM/yyyy HH:mm').format(occurrence.dateTime),
-                                style: Theme.of(context).textTheme.bodySmall,
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            occurrence.title,
-                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            occurrence.description,
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
+                itemBuilder: (context, index) =>
+                    _OccurrenceCard(occurrence: occurrences[index]),
               );
             },
           ),
@@ -82,58 +38,93 @@ class TimelineScreen extends StatelessWidget {
       ],
     );
   }
+}
 
-  Widget _buildFilterHeader(BuildContext context) {
-    return Container(
-      color: DesignSystem.surface,
-      padding: const EdgeInsets.all(16),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const Text(
-            'Histórico de Registros',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-          ),
-          Consumer<OccurrenceProvider>(
-            builder: (context, provider, child) {
-              final hasFilter = provider.filterStartDate != null;
-              return TextButton.icon(
-                onPressed: () async {
-                  if (hasFilter) {
-                    provider.clearFilter();
-                  } else {
-                    final DateTimeRange? picked = await showDateRangePicker(
-                      context: context,
-                      firstDate: DateTime(2020),
-                      lastDate: DateTime.now(),
-                      builder: (context, child) {
-                        return Theme(
-                          data: Theme.of(context).copyWith(
-                            colorScheme: const ColorScheme.light(
-                              primary: DesignSystem.primary,
-                            ),
+class _OccurrenceCard extends StatelessWidget {
+  const _OccurrenceCard({required this.occurrence});
+
+  final Occurrence occurrence;
+
+  @override
+  Widget build(BuildContext context) {
+    final path = occurrence.imagePath;
+    final hasPhoto = path != null && path.isNotEmpty;
+
+    return Card(
+      elevation: 0,
+      clipBehavior: Clip.antiAlias,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(DesignSystem.cardRadius),
+        side: BorderSide(color: Colors.grey.shade200),
+      ),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: InkWell(
+        onTap: () => showOccurrenceDetails(context, occurrence),
+        child: Padding(
+          padding: DesignSystem.cardPadding,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Flexible(
+                          child: Chip(
+                            avatar: Icon(occurrence.category.icon,
+                                size: 18, color: occurrence.category.color),
+                            label: Text(occurrence.category.label,
+                                style: const TextStyle(fontSize: 14)),
+                            backgroundColor: DesignSystem.tertiary,
+                            side: BorderSide.none,
                           ),
-                          child: child!,
-                        );
-                      },
-                    );
-                    if (picked != null) {
-                      provider.setFilterDateRange(picked.start, picked.end);
-                    }
-                  }
-                },
-                icon: Icon(
-                  hasFilter ? Icons.filter_alt_off : Icons.filter_alt,
-                  color: DesignSystem.primary,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          DateFormat('dd/MM/yyyy HH:mm').format(occurrence.dateTime),
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      occurrence.title,
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleMedium
+                          ?.copyWith(fontWeight: FontWeight.bold),
+                    ),
+                    if (occurrence.description.isNotEmpty) ...[
+                      const SizedBox(height: 4),
+                      Text(
+                        occurrence.description,
+                        style: const TextStyle(fontSize: 14),
+                      ),
+                    ],
+                    if (occurrence.address != null) ...[
+                      const SizedBox(height: 4),
+                      Text(
+                        occurrence.address!,
+                        style: const TextStyle(
+                            color: DesignSystem.secondary, fontSize: 12),
+                      ),
+                    ],
+                  ],
                 ),
-                label: Text(
-                  hasFilter ? 'Limpar' : 'Filtrar',
-                  style: const TextStyle(color: DesignSystem.primary),
+              ),
+              if (hasPhoto) ...[
+                const SizedBox(width: 12),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: OccurrenceImage(path: path, width: 72, height: 72),
                 ),
-              );
-            },
-          )
-        ],
+              ],
+            ],
+          ),
+        ),
       ),
     );
   }
