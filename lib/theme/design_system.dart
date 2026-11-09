@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 class DesignSystem {
-  // FeedLoop Colors
+  // Cores
   static const Color primary = Color(0xFF2563EB); // Blue
   static const Color secondary = Color(0xFF6B7280); // Gray
   static const Color tertiary = Color(0xFFF9FAFB); // Light
-  static const Color background = Color(0xFFF9FAFB); // Feed background
-  static const Color surface = Color(0xFFFFFFFF); // Post cards
+  static const Color background = Color(0xFFF9FAFB); // Fundo das telas
+  static const Color surface = Color(0xFFFFFFFF); // Cartões
   
-  static const Color success = Color(0xFF16A34A);
+  static const Color success = Color(0xFF15803D); // contraste ≥4,5:1 com texto branco
   static const Color warning = Color(0xFFD97706);
   static const Color error = Color(0xFFDC2626);
   static const Color info = Color(0xFF2563EB);
@@ -18,7 +18,7 @@ class DesignSystem {
   static const double cardRadius = 12.0;
   static const EdgeInsets cardPadding = EdgeInsets.all(16.0);
   
-  // Shadows (Don't add heavy shadows to feed cards)
+  // Sombras (leves, sem peso nos cartões)
   static final List<BoxShadow> cardShadow = [
     BoxShadow(
       color: Colors.black.withValues(alpha: 0.05),
