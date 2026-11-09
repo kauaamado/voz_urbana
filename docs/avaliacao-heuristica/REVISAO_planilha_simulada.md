@@ -42,7 +42,7 @@ rascunho gerado pelos agentes. Os arquivos originais estão em `dados_simulados/
 ## O que **não** foi alterado
 
 - Diferenças de opinião e de severidade entre as personas: são o objetivo de usar personas diferentes.
-- Os 16 "N/A" da persona Ana nos itens puramente visuais (8.4 a 8.12): coerentes com uma persona que usa leitor de tela.
+- Os "N/A" da persona Ana nos itens puramente visuais (8.4 a 8.8, 8.10 e 8.12): coerentes com uma persona que usa leitor de tela.
 - Os achados de maior severidade (não poder desfazer/editar, localização capturada só ao abrir a tela, seletor de
   datas em inglês, falta de busca/filtro por categoria): conferidos no código e mantidos.
 
