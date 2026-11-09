@@ -9,7 +9,8 @@ class PrivacyNotice extends StatelessWidget {
     'Ficam públicos: foto, localização, data e categoria.',
     'Não coletamos: nome, conta, telefone ou e-mail.',
     'Evite fotografar rostos e placas de veículos.',
-    'Neste protótipo os dados ficam apenas na memória do aparelho.',
+    'O endereço é obtido enviando a localização ao OpenStreetMap (Nominatim); o mapa também é baixado de lá.',
+    'Este protótipo não tem servidor próprio: os registros ficam só na memória do aparelho.',
   ];
 
   void _showDetails(BuildContext context) {

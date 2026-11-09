@@ -30,6 +30,7 @@ class FilterBar extends StatelessWidget {
     final count = provider.hasActiveFilter ? provider.occurrences.length : 0;
 
     return Container(
+      width: double.infinity, // ocupa a largura toda também dentro de uma Column
       color: DesignSystem.surface,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Wrap(

@@ -24,6 +24,9 @@ void main() {
 
     expect(find.text('Privacidade e LGPD'), findsOneWidget);
     expect(find.text('Evite fotografar rostos e placas de veículos.'), findsOneWidget);
+    // Declara o que realmente sai do aparelho (endereço via OpenStreetMap).
+    expect(find.textContaining('OpenStreetMap'), findsOneWidget);
+    expect(find.textContaining('Este protótipo não tem servidor próprio'), findsOneWidget);
 
     await tester.tap(find.text('Entendi'));
     await tester.pumpAndSettle();
