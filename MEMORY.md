@@ -35,6 +35,12 @@ Sem backend e sem persistência: tudo em memória (`OccurrenceProvider`, com 4 o
 - `DesignSystem.success` = `#15803D` (contraste com texto branco).
 
 ## Pendências conhecidas
+- **Filtro de período (RF4) inclui o dia anterior e o seguinte** ao intervalo mostrado no chip
+  (`OccurrenceProvider.occurrences`, `isAfter(start-1d)`/`isBefore(end+1d)`). Já existia antes; não corrigido por não ter sido pedido.
+- Verificar em aparelho: área de toque do FAB pequeno do mapa (40 px) e do botão de remover do chip de filtro (requisito ≥44 px).
+- Endereço fica nulo se o usuário publicar antes da resposta do Nominatim; cache do endereço é por instância (por tela).
+- Fotos da câmera ficam no cache temporário do app (podem sumir; a UI mostra ícone de imagem quebrada).
+- Mapa: `MapController` não é descartado; SnackBars repetidos de GPS se empilham.
 - Atribuição "© OpenStreetMap" (ODbL) não é exibida no mapa/endereço.
 - `userAgentPackageName` dos tiles ainda é `com.example.voz_urbana`.
 - `DESIGN.md` é um template de outro produto ("FeedLoop"), não descreve este app.
