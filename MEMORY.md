@@ -35,9 +35,7 @@ Sem backend e sem persistência: tudo em memória (`OccurrenceProvider`, com 4 o
 - `DesignSystem.success` = `#15803D` (contraste com texto branco).
 
 ## Pendências conhecidas
-- **Filtro de período (RF4) inclui o dia anterior e o seguinte** ao intervalo mostrado no chip
-  (`OccurrenceProvider.occurrences`, `isAfter(start-1d)`/`isBefore(end+1d)`). Já existia antes; não corrigido por não ter sido pedido.
-- Verificar em aparelho: área de toque do FAB pequeno do mapa (40 px) e do botão de remover do chip de filtro (requisito ≥44 px).
+- Testado no aparelho (Android 14) pelo aluno: roteiro de registro, GPS, mapa, filtro e câmera OK; botões do mapa e do chip fáceis de tocar. **TalkBack não foi testado** (não conseguiu ativar).
 - Endereço fica nulo se o usuário publicar antes da resposta do Nominatim; cache do endereço é por instância (por tela).
 - Fotos da câmera ficam no cache temporário do app (podem sumir; a UI mostra ícone de imagem quebrada).
 - Mapa: `MapController` não é descartado; SnackBars repetidos de GPS se empilham.

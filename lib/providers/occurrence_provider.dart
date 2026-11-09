@@ -43,13 +43,23 @@ class OccurrenceProvider with ChangeNotifier {
     // Ordenar mais recentes primeiro
     filtered.sort((a, b) => b.dateTime.compareTo(a.dateTime));
 
-    if (_filterStartDate != null && _filterEndDate != null) {
-      filtered = filtered.where((o) {
-        return o.dateTime.isAfter(_filterStartDate!.subtract(const Duration(days: 1))) &&
-               o.dateTime.isBefore(_filterEndDate!.add(const Duration(days: 1)));
-      }).toList();
+    if (hasActiveFilter) {
+      // Dias de calendário inclusivos: do início do primeiro dia até o fim do último.
+      final start = DateTime(
+        _filterStartDate!.year,
+        _filterStartDate!.month,
+        _filterStartDate!.day,
+      );
+      final endExclusive = DateTime(
+        _filterEndDate!.year,
+        _filterEndDate!.month,
+        _filterEndDate!.day + 1,
+      );
+      filtered = filtered
+          .where((o) => !o.dateTime.isBefore(start) && o.dateTime.isBefore(endExclusive))
+          .toList();
     }
-    
+
     return filtered;
   }
   
