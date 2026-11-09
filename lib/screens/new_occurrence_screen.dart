@@ -1,345 +1,373 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 import '../models/occurrence.dart';
 import '../providers/occurrence_provider.dart';
+import '../services/address_service.dart';
+import '../services/location_service.dart';
 import '../theme/design_system.dart';
+import '../widgets/category_chips.dart';
+import '../widgets/occurrence_image.dart';
+
+typedef ImagePathPicker = Future<String?> Function(ImageSource source);
+
+Future<String?> _defaultPicker(ImageSource source) async {
+  final file = await ImagePicker().pickImage(source: source, imageQuality: 70);
+  return file?.path;
+}
 
 class NewOccurrenceScreen extends StatefulWidget {
-  const NewOccurrenceScreen({super.key});
+  const NewOccurrenceScreen({
+    super.key,
+    this.locationService,
+    this.addressService,
+    this.pickImagePath,
+  });
+
+  final LocationService? locationService;
+  final AddressService? addressService;
+  final ImagePathPicker? pickImagePath;
 
   @override
   State<NewOccurrenceScreen> createState() => _NewOccurrenceScreenState();
 }
 
-class _NewOccurrenceScreenState extends State<NewOccurrenceScreen> {
-  final _formKey = GlobalKey<FormState>();
+class _NewOccurrenceScreenState extends State<NewOccurrenceScreen>
+    with WidgetsBindingObserver {
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
-  
-  OccurrenceCategory? _selectedCategory;
-  File? _imageFile;
-  LatLng? _currentLocation;
-  bool _isLoadingLocation = false;
-  bool _isSaving = false;
 
-  final ImagePicker _picker = ImagePicker();
+  late final LocationService _locationService =
+      widget.locationService ?? GeolocatorLocationService();
+  late final AddressService _addressService =
+      widget.addressService ?? NominatimAddressService();
+  late final ImagePathPicker _pickImagePath =
+      widget.pickImagePath ?? _defaultPicker;
+
+  OccurrenceCategory? _category;
+  String? _imagePath;
+  LatLng? _location;
+  LocationResult? _locationResult;
+  String? _address;
+  bool _loadingLocation = false;
+  bool _loadingAddress = false;
+  bool _allowPop = false;
+
+  bool get _dirty =>
+      _imagePath != null ||
+      _category != null ||
+      _titleController.text.trim().isNotEmpty ||
+      _descriptionController.text.trim().isNotEmpty;
+
+  List<String> get _missing => [
+        if (_imagePath == null) 'foto',
+        if (_category == null) 'categoria',
+        if (_location == null) 'localização',
+      ];
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _titleController.addListener(_refresh);
+    _descriptionController.addListener(_refresh);
     _getLocation();
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _titleController.dispose();
     _descriptionController.dispose();
     super.dispose();
   }
 
+  /// Ao voltar das configurações do sistema, tenta de novo se ainda não há GPS.
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed &&
+        _location == null &&
+        !_loadingLocation) {
+      _getLocation();
+    }
+  }
+
+  void _refresh() => setState(() {});
+
   Future<void> _getLocation() async {
-    setState(() {
-      _isLoadingLocation = true;
-    });
-
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      _showError('Serviço de localização desabilitado. Por favor, ative o GPS.');
-      setState(() => _isLoadingLocation = false);
-      return;
-    }
-
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        _showError('Permissão de localização negada.');
-        setState(() => _isLoadingLocation = false);
-        return;
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      _showError('Permissão de localização negada permanentemente. Acesse as configurações.');
-      setState(() => _isLoadingLocation = false);
-      return;
-    }
-
-    try {
-      Position position = await Geolocator.getCurrentPosition(
-        locationSettings: const LocationSettings(accuracy: LocationAccuracy.high),
-      );
-      setState(() {
-        _currentLocation = LatLng(position.latitude, position.longitude);
-      });
-    } catch (e) {
-      _showError('Erro ao obter localização: $e');
-    } finally {
-      setState(() {
-        _isLoadingLocation = false;
-      });
-    }
-  }
-
-  Future<void> _pickImage(ImageSource source) async {
-    try {
-      final XFile? pickedFile = await _picker.pickImage(
-        source: source,
-        imageQuality: 70,
-      );
-      if (pickedFile != null) {
-        setState(() {
-          _imageFile = File(pickedFile.path);
-        });
-      }
-    } catch (e) {
-      _showError('Erro ao capturar imagem.');
-    }
-  }
-
-  void _showError(String message) {
+    setState(() => _loadingLocation = true);
+    final result = await _locationService.current();
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: DesignSystem.error,
-      ),
-    );
+    setState(() {
+      _loadingLocation = false;
+      _locationResult = result;
+      if (result is LocationOk) _location = result.position;
+    });
+    if (result is LocationOk) _loadAddress(result.position);
   }
 
-  Future<void> _submit() async {
-    if (!_formKey.currentState!.validate()) return;
-    
-    if (_selectedCategory == null) {
-      _showError('Por favor, selecione uma categoria.');
-      return;
-    }
-
-    if (_currentLocation == null) {
-      _showError('Aguarde a obtenção da localização ou verifique o GPS.');
-      return;
-    }
-
-    // Heurística de Prevenção de Erros: Diálogo de Confirmação
-    final bool? confirm = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Publicar Ocorrência?'),
-        content: const Text('Você está prestes a registrar esta ocorrência publicamente. Deseja continuar?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancelar', style: TextStyle(color: DesignSystem.secondary)),
-          ),
-          ElevatedButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: const Text('Publicar'),
-          ),
-        ],
-      ),
-    );
-
-    if (confirm != true) return;
-
+  Future<void> _loadAddress(LatLng position) async {
+    setState(() => _loadingAddress = true);
+    final address = await _addressService.reverse(position);
+    if (!mounted) return;
     setState(() {
-      _isSaving = true;
+      _address = address;
+      _loadingAddress = false;
     });
+  }
 
-    final occurrence = Occurrence(
-      title: _titleController.text.trim(),
-      description: _descriptionController.text.trim(),
-      category: _selectedCategory!,
-      location: _currentLocation!,
-      imagePath: _imageFile?.path,
-    );
+  Future<void> _onLocationAction() async {
+    switch (_locationResult) {
+      case LocationServiceDisabled():
+        await _locationService.openLocationSettings();
+      case LocationDeniedForever():
+        await _locationService.openAppSettings();
+      default:
+        await _getLocation();
+    }
+  }
 
-    if (mounted) {
-      Provider.of<OccurrenceProvider>(context, listen: false).addOccurrence(occurrence);
-      Navigator.pop(context); // Volta para a tela anterior com sucesso
+  Future<void> _pick(ImageSource source) async {
+    try {
+      final path = await _pickImagePath(source);
+      if (path != null && mounted) setState(() => _imagePath = path);
+    } catch (_) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Ocorrência registrada com sucesso!'),
-          backgroundColor: DesignSystem.success,
+          content: Text('Não foi possível abrir a câmera ou a galeria.'),
+          backgroundColor: DesignSystem.error,
         ),
       );
     }
   }
 
+  Future<bool> _confirmDiscard() async {
+    final discard = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Descartar registro?'),
+        content: const Text('Os dados preenchidos serão perdidos.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Continuar editando'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Descartar',
+                style: TextStyle(color: DesignSystem.error)),
+          ),
+        ],
+      ),
+    );
+    return discard == true;
+  }
+
+  void _publish() {
+    final category = _category!;
+    final occurrence = Occurrence(
+      title: Occurrence.titleFor(_titleController.text, category),
+      description: _descriptionController.text.trim(),
+      category: category,
+      location: _location!,
+      address: _address,
+      imagePath: _imagePath,
+    );
+    context.read<OccurrenceProvider>().addOccurrence(occurrence);
+    final messenger = ScaffoldMessenger.of(context);
+    setState(() => _allowPop = true);
+    Navigator.pop(context);
+    messenger.showSnackBar(
+      const SnackBar(
+        content: Text('Ocorrência registrada com sucesso!'),
+        backgroundColor: DesignSystem.success,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Nova Ocorrência'),
-      ),
-      body: _isSaving 
-          ? const Center(child: CircularProgressIndicator()) 
-          : SingleChildScrollView(
-              padding: const EdgeInsets.all(16.0),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    // Campo Título
-                    TextFormField(
-                      controller: _titleController,
-                      decoration: const InputDecoration(
-                        labelText: 'Título breve',
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return 'Informe um título';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 16),
-                    
-                    // Categoria
-                    DropdownButtonFormField<OccurrenceCategory>(
-                      decoration: const InputDecoration(
-                        labelText: 'Categoria',
-                        border: OutlineInputBorder(),
-                      ),
-                      initialValue: _selectedCategory,
-                      items: OccurrenceCategory.values.map((cat) {
-                        return DropdownMenuItem(
-                          value: cat,
-                          child: Text(cat.label),
-                        );
-                      }).toList(),
-                      onChanged: (val) {
-                        setState(() {
-                          _selectedCategory = val;
-                        });
-                      },
-                    ),
-                    const SizedBox(height: 16),
+    final missing = _missing;
 
-                    // Descrição
-                    TextFormField(
-                      controller: _descriptionController,
-                      maxLines: 3,
-                      decoration: const InputDecoration(
-                        labelText: 'Descrição detalhada',
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return 'Informe a descrição';
-                        }
-                        return null;
-                      },
+    return PopScope(
+      canPop: !_dirty || _allowPop,
+      onPopInvokedWithResult: (didPop, _) async {
+        if (didPop) return;
+        final navigator = Navigator.of(context);
+        if (await _confirmDiscard()) {
+          setState(() => _allowPop = true);
+          navigator.pop();
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(title: const Text('Nova Ocorrência')),
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _buildPhoto(),
+              const SizedBox(height: 16),
+              const Text('Categoria',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+              const SizedBox(height: 8),
+              CategoryChips(
+                selected: _category,
+                onSelected: (c) => setState(() => _category = c),
+              ),
+              const SizedBox(height: 16),
+              _buildLocationCard(),
+              const SizedBox(height: 8),
+              ExpansionTile(
+                title: const Text('Detalhes (opcional)',
+                    style: TextStyle(fontSize: 14)),
+                tilePadding: EdgeInsets.zero,
+                childrenPadding: const EdgeInsets.only(bottom: 8),
+                children: [
+                  TextField(
+                    controller: _titleController,
+                    decoration: const InputDecoration(
+                      labelText: 'Título breve',
+                      border: OutlineInputBorder(),
                     ),
-                    const SizedBox(height: 16),
-
-                    // Status da Localização (Heurística 1)
-                    Card(
-                      elevation: 0,
-                      color: DesignSystem.tertiary,
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(color: Colors.grey.shade300),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Row(
-                          children: [
-                            if (_isLoadingLocation)
-                              const SizedBox(
-                                width: 24,
-                                height: 24,
-                                child: CircularProgressIndicator(strokeWidth: 2),
-                              )
-                            else if (_currentLocation != null)
-                              const Icon(Icons.check_circle, color: DesignSystem.success)
-                            else
-                              const Icon(Icons.error, color: DesignSystem.error),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Text(
-                                _isLoadingLocation 
-                                    ? 'Obtendo localização atual...' 
-                                    : _currentLocation != null 
-                                        ? 'Localização capturada' 
-                                        : 'Falha ao obter localização',
-                              ),
-                            ),
-                            if (!_isLoadingLocation && _currentLocation == null)
-                              TextButton(
-                                onPressed: _getLocation,
-                                child: const Text('Tentar Novamente'),
-                              )
-                          ],
-                        ),
-                      ),
+                  ),
+                  const SizedBox(height: 12),
+                  TextField(
+                    controller: _descriptionController,
+                    maxLines: 3,
+                    decoration: const InputDecoration(
+                      labelText: 'Descrição',
+                      border: OutlineInputBorder(),
                     ),
-                    const SizedBox(height: 16),
-
-                    // Foto
-                    if (_imageFile != null) ...[
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: Image.file(
-                          _imageFile!,
-                          height: 200,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      TextButton.icon(
-                        onPressed: () => setState(() => _imageFile = null),
-                        icon: const Icon(Icons.delete, color: DesignSystem.error),
-                        label: const Text('Remover foto', style: TextStyle(color: DesignSystem.error)),
-                      ),
-                    ] else ...[
-                      Row(
-                        children: [
-                          Expanded(
-                            child: OutlinedButton.icon(
-                              onPressed: () => _pickImage(ImageSource.camera),
-                              icon: const Icon(Icons.camera_alt),
-                              label: const Text('Câmera'),
-                              style: OutlinedButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(vertical: 12),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: OutlinedButton.icon(
-                              onPressed: () => _pickImage(ImageSource.gallery),
-                              icon: const Icon(Icons.photo_library),
-                              label: const Text('Galeria'),
-                              style: OutlinedButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(vertical: 12),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                    
-                    const SizedBox(height: 32),
-                    
-                    // Botão Salvar
-                    ElevatedButton(
-                      onPressed: _isLoadingLocation ? null : _submit,
-                      child: const Text('Publicar Ocorrência'),
-                    ),
-                  ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                'Sua publicação é anônima. A foto e a localização ficarão visíveis para todos no mapa.',
+                style: TextStyle(color: DesignSystem.secondary, fontSize: 12),
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: missing.isEmpty ? _publish : null,
+                child: const Text('Publicar'),
+              ),
+              if (missing.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.only(top: 8),
+                  child: Text(
+                    'Falta: ${missing.join(', ')}',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                        color: DesignSystem.secondary, fontSize: 12),
+                  ),
                 ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPhoto() {
+    final path = _imagePath;
+    if (path != null) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: OccurrenceImage(path: path, height: 200, width: double.infinity),
+          ),
+          TextButton.icon(
+            onPressed: () => setState(() => _imagePath = null),
+            icon: const Icon(Icons.delete, color: DesignSystem.error),
+            label: const Text('Remover foto',
+                style: TextStyle(color: DesignSystem.error)),
+          ),
+        ],
+      );
+    }
+    return Row(
+      children: [
+        Expanded(child: _photoButton(Icons.camera_alt, 'Câmera', ImageSource.camera)),
+        const SizedBox(width: 16),
+        Expanded(
+            child: _photoButton(Icons.photo_library, 'Galeria', ImageSource.gallery)),
+      ],
+    );
+  }
+
+  Widget _photoButton(IconData icon, String label, ImageSource source) {
+    return OutlinedButton.icon(
+      onPressed: () => _pick(source),
+      icon: Icon(icon),
+      label: Text(label),
+      style: OutlinedButton.styleFrom(
+        minimumSize: const Size.fromHeight(64),
+      ),
+    );
+  }
+
+  Widget _buildLocationCard() {
+    final result = _locationResult;
+    final failed = !_loadingLocation && _location == null && result != null;
+
+    return Card(
+      elevation: 0,
+      margin: EdgeInsets.zero,
+      color: DesignSystem.tertiary,
+      shape: RoundedRectangleBorder(
+        side: BorderSide(color: Colors.grey.shade300),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Row(
+          children: [
+            if (_loadingLocation)
+              const SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: CircularProgressIndicator(strokeWidth: 2))
+            else if (_location != null)
+              const Icon(Icons.check_circle, color: DesignSystem.success)
+            else
+              const Icon(Icons.error, color: DesignSystem.error),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    _loadingLocation
+                        ? 'Obtendo localização atual...'
+                        : _location != null
+                            ? 'Localização capturada'
+                            : (result?.message ?? 'Localização indisponível'),
+                    style: const TextStyle(fontSize: 14),
+                  ),
+                  if (_location != null)
+                    Text(
+                      _loadingAddress
+                          ? 'Buscando endereço...'
+                          : (_address ?? 'Endereço indisponível'),
+                      style: const TextStyle(
+                          color: DesignSystem.secondary, fontSize: 12),
+                    ),
+                ],
               ),
             ),
+            if (failed && result.actionLabel != null)
+              TextButton(
+                onPressed: _onLocationAction,
+                child: Text(result.actionLabel!),
+              ),
+          ],
+        ),
+      ),
     );
   }
 }
