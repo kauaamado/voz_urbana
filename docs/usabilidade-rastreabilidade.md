@@ -17,12 +17,12 @@ heurística (Nielsen). Situações: **Atende**, **Atende com ajuste**, **Não at
 | **RU1** Visibilidade do status | Atende com ajuste | Cartão de localização (carregando/capturada/falha), botão "minha localização" com indicador, chip e contagem do filtro | **Não há upload real** (não existe backend): o feedback de publicação é o aviso de sucesso e o item novo no topo da lista. Não há indicador de carregamento dos blocos do mapa. |
 | **RU2** Correspondência com o mundo real | Atende com ajuste | Ícones: câmera, galeria, calendário, localização, categoria; termo "ocorrência" nos títulos, diálogos e mensagens | O requisito cita "pino de mapa": o marcador é um círculo com o ícone da categoria, não o pino clássico. O botão flutuante diz "Registrar" e o detalhe diz "Registrado em" (mesma família de termos, mas não idênticos). Os testes cobrem o ícone de calendário e os rótulos principais. |
 | **RU3** Prevenção de erros | Atende com ajuste | Botão "Publicar" desabilitado com o motivo ("Falta: foto, categoria"); alerta de GPS persistente com ação na tela de registro; confirmação ao descartar o formulário | **O documento pedia tela de confirmação antes da publicação. Ela foi substituída:** a própria tela de registro é a revisão (foto, categoria, localização, endereço e aviso de publicidade ficam visíveis antes de "Publicar"). Ajustar o texto do requisito no relatório. No mapa, a falha do GPS (botão "minha localização") aparece como aviso passageiro, não persistente. |
-| **RU4** Mínima carga cognitiva | Atende com ajuste | Fluxo: Registrar → foto → categoria → Publicar | **São 4 toques, não 3.** A categoria é obrigatória para preservar a qualidade dos dados. Ajustar o texto do requisito para "até 4 toques". A contagem não inclui os toques dentro do aplicativo de câmera do sistema (obturador e confirmação). |
-| **RU5** Alto contraste | Atende com ajuste | `test/theme/contrast_test.dart` | Texto secundário ≥7:1; texto branco sobre as cores de ação ≥4,5:1; cores de categoria ≥3:1. **A leitura sob sol real não foi verificada.** |
+| **RU4** Mínima carga cognitiva | Atende com ajuste | Fluxo: Registrar → foto → categoria → Publicar | **São 4 toques, não 3.** A categoria é obrigatória para preservar a qualidade dos dados. Ajustar o texto do requisito para "até 4 toques". A contagem não inclui os toques dentro do aplicativo de câmera do sistema (obturador e confirmação). Verificado pelo aluno no aparelho: os 4 toques foram suficientes. |
+| **RU5** Alto contraste | Atende | `test/theme/contrast_test.dart`; verificação do aluno ao ar livre | Texto secundário ≥7:1; texto branco sobre as cores de ação ≥4,5:1; cores de categoria ≥3:1. Ao ar livre, sob iluminação solar, o aluno relatou leitura boa e contraste adequado. |
 | **RU5** Leitores de tela | Não verificado | `Semantics` em marcador, foto, cartão de localização e contagem do filtro | Os rótulos foram implementados, mas o aluno não conseguiu ativar o TalkBack. Não afirmar suporte comprovado. |
-| **RNF1** Carga em até 2 s | Não verificado | — | Não foi medido (depende da rede e dos blocos do OpenStreetMap). Ver checklist abaixo. |
+| **RNF1** Carga em até 2 s | Atende com ajuste | Verificação do aluno no aparelho | O mapa carregou em cerca de 1 s no Wi-Fi (medição informal do aluno). **Verificação parcial:** não foi testado em 4G e as miniaturas não foram cronometradas separadamente. Depende da rede e dos blocos do OpenStreetMap. |
 | **RNF2** Anonimato e LGPD | Atende com ajuste | `lib/widgets/privacy_notice.dart` | Não há login nem conta, e o app não pede nome, telefone ou e-mail. **Mas a localização sai do aparelho:** ao capturá-la, as coordenadas exatas são enviadas ao OpenStreetMap (Nominatim) para obter o endereço, e os blocos do mapa também são baixados de lá (o que expõe o IP). O painel "Privacidade e LGPD" declara isso. Não há servidor próprio: os registros ficam só na memória do aparelho, então a frase "visíveis para todos no mapa" descreve a intenção do produto, não algo que o protótipo faça hoje. Não há política formal nem consentimento registrado. |
-| **RNF3** Android e iOS | Não atende (justificado) | O projeto só tem a pasta `android/` | O protótipo é **somente Android**. O iOS exigiria gerar a plataforma e compilar em um Mac. Há testes automatizados de fonte a 200 % em tela de 400 px para quatro componentes (Linha do Tempo, filtro, registro e detalhe); o mapa e a tela inicial não têm teste automatizado, e tablets não foram verificados. |
+| **RNF3** Android e iOS | Não atende (justificado) | O projeto só tem a pasta `android/` | O protótipo é **somente Android**. O iOS exigiria gerar a plataforma e compilar em um Mac. Há testes automatizados de fonte a 200 % em tela de 400 px para quatro componentes (Linha do Tempo, filtro, registro e detalhe); o mapa e a tela inicial não têm teste automatizado, mas o aluno verificou no aparelho, com a fonte do sistema ampliada, que nenhum texto foi cortado. Tablets não foram verificados. |
 
 ## Mudanças em relação ao documento original
 
@@ -42,10 +42,10 @@ heurística (Nielsen). Situações: **Atende**, **Atende com ajuste**, **Não at
 
 ## Checklist manual no aparelho
 
-Preencha com os resultados reais. Itens em branco continuam "Não verificado".
+Resultados informados pelo aluno (teste no aparelho Android 14). Itens desmarcados continuam "Não verificado".
 
-- [ ] 4 toques para publicar (Registrar → foto → categoria → Publicar). Resultado:
-- [ ] TalkBack: os controles principais são lidos e acionáveis. Resultado:
-- [ ] Tempo de carregamento do mapa e das miniaturas em 4G/Wi-Fi (meta ≤2 s). Resultado:
-- [ ] Leitura ao ar livre sob sol. Resultado:
-- [ ] Fonte do sistema ampliada: telas sem texto cortado. Resultado:
+- [X] 4 toques para publicar (Registrar → foto → categoria → Publicar). Resultado: 4 toques foram suficientes.
+- [ ] TalkBack: os controles principais são lidos e acionáveis. Resultado: não verificado (o aluno não testou).
+- [X] Tempo de carregamento do mapa e das miniaturas em 4G/Wi-Fi (meta ≤2 s). Resultado: mapa em cerca de 1 s no Wi-Fi; 4G e miniaturas não medidos.
+- [X] Leitura ao ar livre sob sol. Resultado: leitura boa, contraste adequado.
+- [X] Fonte do sistema ampliada: telas sem texto cortado. Resultado: nenhum texto cortado.
