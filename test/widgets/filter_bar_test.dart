@@ -46,4 +46,16 @@ void main() {
     expect(find.text('Nenhuma ocorrência registrada.'), findsOneWidget);
     expect(find.text('Limpar filtro'), findsNothing);
   });
+
+  testWidgets('botão de filtro usa ícone de calendário, com e sem filtro', (tester) async {
+    final p = OccurrenceProvider();
+    await tester.pumpWidget(_app(p, const FilterBar()));
+    expect(find.byIcon(Icons.calendar_month), findsOneWidget);
+    expect(find.byIcon(Icons.filter_alt), findsNothing);
+
+    p.setFilterDateRange(DateTime(2026, 3, 1), DateTime(2026, 3, 2));
+    await tester.pump();
+    expect(find.byIcon(Icons.calendar_month), findsOneWidget);
+    expect(find.byIcon(Icons.filter_alt), findsNothing);
+  });
 }

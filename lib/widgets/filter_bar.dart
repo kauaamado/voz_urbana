@@ -35,7 +35,7 @@ class FilterBar extends StatelessWidget {
         children: [
           TextButton.icon(
             onPressed: () => _pick(context, provider),
-            icon: const Icon(Icons.filter_alt, color: DesignSystem.primary),
+            icon: const Icon(Icons.calendar_month, color: DesignSystem.primary),
             label: const Text(
               'Filtrar período',
               style: TextStyle(color: DesignSystem.primary, fontSize: 14),

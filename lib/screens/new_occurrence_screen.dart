@@ -154,7 +154,7 @@ class _NewOccurrenceScreenState extends State<NewOccurrenceScreen>
     final discard = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Descartar registro?'),
+        title: const Text('Descartar ocorrência?'),
         content: const Text('Os dados preenchidos serão perdidos.'),
         actions: [
           TextButton(
@@ -211,7 +211,7 @@ class _NewOccurrenceScreenState extends State<NewOccurrenceScreen>
         }
       },
       child: Scaffold(
-        appBar: AppBar(title: const Text('Nova Ocorrência')),
+        appBar: AppBar(title: const Text('Registrar ocorrência')),
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
           child: Column(

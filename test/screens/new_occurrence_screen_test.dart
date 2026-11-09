@@ -157,19 +157,19 @@ void main() {
 
     await tester.state<NavigatorState>(find.byType(Navigator).first).maybePop();
     await tester.pumpAndSettle();
-    expect(find.text('Descartar registro?'), findsOneWidget);
+    expect(find.text('Descartar ocorrência?'), findsOneWidget);
 
     await tester.tap(find.text('Descartar'));
     await tester.pumpAndSettle();
-    expect(find.text('Nova Ocorrência'), findsNothing);
+    expect(find.text('Registrar ocorrência'), findsNothing);
   });
 
   testWidgets('voltar sem dados sai direto', (tester) async {
     await _abrir(tester);
     await tester.state<NavigatorState>(find.byType(Navigator).first).maybePop();
     await tester.pumpAndSettle();
-    expect(find.text('Descartar registro?'), findsNothing);
-    expect(find.text('Nova Ocorrência'), findsNothing);
+    expect(find.text('Descartar ocorrência?'), findsNothing);
+    expect(find.text('Registrar ocorrência'), findsNothing);
   });
 
   Future<void> idaEVoltaDoApp(WidgetTester tester) async {
@@ -218,5 +218,10 @@ void main() {
     final node = tester.getSemantics(find.byKey(const Key('location-card')));
     expect(node.flagsCollection.isLiveRegion, isTrue);
     handle.dispose();
+  });
+
+  testWidgets('título da tela é "Registrar ocorrência"', (tester) async {
+    await _abrir(tester);
+    expect(find.text('Registrar ocorrência'), findsOneWidget);
   });
 }
