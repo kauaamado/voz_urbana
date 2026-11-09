@@ -37,6 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: _pages,
       ),
       floatingActionButton: FloatingActionButton.extended(
+        tooltip: 'Registrar nova ocorrência',
         onPressed: () {
           Navigator.push(
             context,
