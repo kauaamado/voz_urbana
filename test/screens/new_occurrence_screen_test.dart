@@ -224,4 +224,10 @@ void main() {
     await _abrir(tester);
     expect(find.text('Registrar ocorrência'), findsOneWidget);
   });
+
+  testWidgets('tela de registro oferece o aviso de privacidade', (tester) async {
+    await _abrir(tester);
+    await tester.scrollUntilVisible(find.text('Saiba mais'), 100);
+    expect(find.text('Saiba mais'), findsOneWidget);
+  });
 }
