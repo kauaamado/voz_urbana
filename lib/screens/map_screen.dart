@@ -1,24 +1,78 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 import '../providers/occurrence_provider.dart';
+import '../services/location_service.dart';
 import '../theme/design_system.dart';
-import 'package:intl/intl.dart';
+import '../widgets/empty_occurrences.dart';
+import '../widgets/filter_bar.dart';
+import '../widgets/occurrence_detail_sheet.dart';
+import '../widgets/occurrence_marker.dart';
 
-class MapScreen extends StatelessWidget {
-  const MapScreen({super.key});
+class MapScreen extends StatefulWidget {
+  const MapScreen({super.key, this.locationService});
+
+  final LocationService? locationService;
+
+  @override
+  State<MapScreen> createState() => _MapScreenState();
+}
+
+class _MapScreenState extends State<MapScreen> {
+  static const _initialCenter = LatLng(-22.5112, -43.1779); // CEFET-RJ Petrópolis
+
+  final _mapController = MapController();
+  late final LocationService _locationService =
+      widget.locationService ?? GeolocatorLocationService();
+
+  LatLng? _myPosition;
+  bool _locating = false;
+
+  Future<void> _goToMyLocation() async {
+    setState(() => _locating = true);
+    final result = await _locationService.current();
+    if (!mounted) return;
+    setState(() => _locating = false);
+
+    if (result is LocationOk) {
+      setState(() => _myPosition = result.position);
+      _mapController.move(result.position, 16);
+      return;
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(result.message),
+        backgroundColor: DesignSystem.error,
+        action: result.actionLabel == null
+            ? null
+            : SnackBarAction(
+                label: result.actionLabel!,
+                textColor: Colors.white,
+                onPressed: () => switch (result) {
+                  LocationServiceDisabled() =>
+                    _locationService.openLocationSettings(),
+                  LocationDeniedForever() => _locationService.openAppSettings(),
+                  _ => _goToMyLocation(),
+                },
+              ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<OccurrenceProvider>(
-      builder: (context, provider, child) {
-        return FlutterMap(
-          options: MapOptions(
-            initialCenter: const LatLng(-22.5112, -43.1779), // CEFET-RJ Petrópolis
+    final provider = context.watch<OccurrenceProvider>();
+    final occurrences = provider.occurrences;
+
+    return Stack(
+      children: [
+        FlutterMap(
+          mapController: _mapController,
+          options: const MapOptions(
+            initialCenter: _initialCenter,
             initialZoom: 15.0,
-            interactionOptions: const InteractionOptions(flags: InteractiveFlag.all),
           ),
           children: [
             TileLayer(
@@ -26,89 +80,61 @@ class MapScreen extends StatelessWidget {
               userAgentPackageName: 'com.example.voz_urbana',
             ),
             MarkerLayer(
-              markers: provider.occurrences.map((occurrence) {
-                return Marker(
-                  point: occurrence.location,
-                  width: 40,
-                  height: 40,
-                  child: GestureDetector(
-                    onTap: () {
-                      _showOccurrenceDetails(context, occurrence);
-                    },
-                    child: const Icon(
-                      Icons.location_on,
-                      color: DesignSystem.primary,
-                      size: 40,
+              markers: [
+                for (final o in occurrences)
+                  Marker(
+                    point: o.location,
+                    width: OccurrenceMarker.size,
+                    height: OccurrenceMarker.size,
+                    child: OccurrenceMarker(
+                      occurrence: o,
+                      onTap: () => showOccurrenceDetails(context, o),
                     ),
                   ),
-                );
-              }).toList(),
+                if (_myPosition != null)
+                  Marker(
+                    point: _myPosition!,
+                    width: 28,
+                    height: 28,
+                    child: Semantics(
+                      label: 'Você está aqui',
+                      child: const Icon(Icons.my_location,
+                          color: DesignSystem.primary, size: 28),
+                    ),
+                  ),
+              ],
             ),
           ],
-        );
-      },
-    );
-  }
-
-  void _showOccurrenceDetails(BuildContext context, dynamic occurrence) {
-    showModalBottomSheet(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-      ),
-      builder: (context) {
-        return Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                occurrence.title,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: DesignSystem.primary,
-                    ),
+        ),
+        const Positioned(top: 0, left: 0, right: 0, child: FilterBar()),
+        if (provider.hasActiveFilter && occurrences.isEmpty)
+          const Center(
+            child: Card(
+              child: Padding(
+                padding: EdgeInsets.all(16),
+                child: EmptyOccurrences(filtered: true),
               ),
-              const SizedBox(height: 8),
-              Chip(
-                label: Text(
-                  occurrence.category.label,
-                  style: const TextStyle(fontSize: 12),
-                ),
-                backgroundColor: DesignSystem.tertiary,
-              ),
-              const SizedBox(height: 8),
-              Text(occurrence.description),
-              const SizedBox(height: 8),
-              Text(
-                'Registrado em: ${DateFormat('dd/MM/yyyy HH:mm').format(occurrence.dateTime)}',
-                style: const TextStyle(color: DesignSystem.secondary, fontSize: 12),
-              ),
-              const SizedBox(height: 16),
-              if (occurrence.imagePath != null && occurrence.imagePath.toString().isNotEmpty) ...[
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: occurrence.imagePath!.startsWith('http')
-                      ? Image.network(
-                          occurrence.imagePath!,
-                          height: 200,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                        )
-                      : Image.file(
-                          File(occurrence.imagePath!),
-                          height: 200,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                        ),
-                ),
-                const SizedBox(height: 16),
-              ],
-            ],
+            ),
           ),
-        );
-      },
+        Positioned(
+          right: 16,
+          bottom: 88, // acima do botão "Registrar"
+          child: FloatingActionButton.small(
+            heroTag: null,
+            tooltip: 'Minha localização',
+            backgroundColor: DesignSystem.surface,
+            foregroundColor: DesignSystem.primary,
+            onPressed: _locating ? null : _goToMyLocation,
+            child: _locating
+                ? const SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : const Icon(Icons.my_location),
+          ),
+        ),
+      ],
     );
   }
 }
