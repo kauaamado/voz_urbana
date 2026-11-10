@@ -10,6 +10,13 @@ Requisitos de origem: `KauaWilliansLopesAmado-VozUrbana-Resumo-e-Requisitos.md`.
 Entrega: relatório + apresentação (normas em `compartilhado_professor/NORMAS.pdf`, **não versionar**
 essa pasta). Relatório, slides e avaliação heurística (planilha `modelo_av_heuristica.xls`, 5
 avaliadores) são feitos pelo aluno e colegas — não inventar notas de avaliadores.
+- Planilha dos avaliadores: `docs/avaliacao-heuristica/planilha_avaliacao_heuristica_5_personas.xls`
+  (Valdes Lopes, Claudio Amado, Felipe Mattos, Heloísa Nogueira, Welinton Costa; média geral 0,81).
+  Versão `_revisada.xls`: comentários sem citação de código; os arquivos relacionados ficam em
+  comentário de célula "Nota do autor". No relatório, idem (coluna "Nota do autor" no Anexo B).
+  Média geral do modelo = média das 10 médias de grupo; N/A fora da média do grupo; títulos 9/10 invertidos.
+- Versão de trabalho do relatório (Google Docs → Word) fica fora do repo, em `~/Downloads/Voz-Urbana-Relatorio-corrigido.docx`.
+- Apresentação: `docs/apresentacao/apresentacao_voz_urbana.pptx` (12 slides, 5–10 min, cores do app, roteiro nas notas do orador; PDF ao lado).
 
 ## Stack
 Flutter, Dart ^3.12.2, provider, geolocator, flutter_map (tiles OSM), image_picker, intl, uuid.
