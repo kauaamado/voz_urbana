@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 
 abstract class AddressService {
@@ -14,7 +15,8 @@ typedef NominatimFetch = Future<String> Function(double lat, double lon);
 /// Geocodificação reversa via Nominatim (OpenStreetMap): gratuita, sem chave.
 /// Política: ≤1 req/s, User-Agent identificável e cache no cliente.
 class NominatimAddressService implements AddressService {
-  NominatimAddressService({NominatimFetch? fetch}) : _fetch = fetch ?? _httpFetch;
+  NominatimAddressService({NominatimFetch? fetch})
+    : _fetch = fetch ?? _httpFetch;
 
   final NominatimFetch _fetch;
   final Map<String, String?> _cache = {};
@@ -64,24 +66,24 @@ class NominatimAddressService implements AddressService {
     }
   }
 
+  // Usa package:http para funcionar também na web (dart:io não existe lá).
+  // Na web o navegador bloqueia o header User-Agent e envia o próprio + Referer.
   static Future<String> _httpFetch(double lat, double lon) async {
-    final client = HttpClient()..connectionTimeout = _timeout;
-    try {
-      final uri = Uri.https('nominatim.openstreetmap.org', '/reverse', {
-        'format': 'jsonv2',
-        'lat': '$lat',
-        'lon': '$lon',
-        'accept-language': 'pt-BR',
-      });
-      final request = await client.getUrl(uri).timeout(_timeout);
-      request.headers.set(HttpHeaders.userAgentHeader, _userAgent);
-      final response = await request.close().timeout(_timeout);
-      if (response.statusCode != 200) {
-        throw HttpException('Nominatim respondeu ${response.statusCode}');
-      }
-      return await response.transform(utf8.decoder).join().timeout(_timeout);
-    } finally {
-      client.close(force: true);
+    final uri = Uri.https('nominatim.openstreetmap.org', '/reverse', {
+      'format': 'jsonv2',
+      'lat': '$lat',
+      'lon': '$lon',
+      'accept-language': 'pt-BR',
+    });
+    final response = await http
+        .get(uri, headers: kIsWeb ? null : {'User-Agent': _userAgent})
+        .timeout(_timeout);
+    if (response.statusCode != 200) {
+      throw http.ClientException(
+        'Nominatim respondeu ${response.statusCode}',
+        uri,
+      );
     }
+    return utf8.decode(response.bodyBytes);
   }
 }

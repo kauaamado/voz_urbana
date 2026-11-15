@@ -1,0 +1,36 @@
+# Deploy em /voz_urbana/ (Hostgator/Apache). Gerado para o build Flutter web.
+
+# Sem listagem de diretório
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /voz_urbana/
+
+  # Força HTTPS (AutoSSL ativo)
+  RewriteCond %{HTTPS} !=on
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # Bloqueia arquivos sensíveis por precaução (.env, .git, etc.)
+  RewriteRule (^|/)\.(?!well-known/) - [F,L]
+
+  # Fallback SPA: rota inexistente -> index.html
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . index.html [L]
+</IfModule>
+
+AddType application/wasm .wasm
+AddType application/manifest+json .webmanifest
+
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "DENY"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(self), geolocation=(self), microphone=(), payment=()"
+
+  # Sempre buscar a versão nova dos arquivos de entrada do app
+  <FilesMatch "^(index\.html|flutter_bootstrap\.js|flutter_service_worker\.js|manifest\.json|version\.json)$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+</IfModule>

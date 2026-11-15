@@ -1,8 +1,11 @@
 import 'dart:io';
+
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import '../theme/design_system.dart';
 
-/// Foto de uma ocorrência: URL (http/https) ou arquivo local.
+/// Foto de uma ocorrência: URL (http/https/blob) ou arquivo local.
+/// Na web, o image_picker devolve uma URL `blob:`, então tudo vai por rede.
 /// Se não carregar, mostra um ícone em vez de lançar exceção.
 class OccurrenceImage extends StatelessWidget {
   const OccurrenceImage({
@@ -41,7 +44,7 @@ class OccurrenceImage extends StatelessWidget {
         ? (height! * dpr).round()
         : null;
 
-    final image = path.startsWith('http')
+    final image = kIsWeb || path.startsWith('http')
         ? Image.network(
             path,
             height: height,
