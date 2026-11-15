@@ -154,3 +154,9 @@ app.*.map.json
 # FVM Version Cache
 .fvm/flutter_sdk
 .fvm/versions
+# Arquivos temporários do LibreOffice/Office
+.~lock.*#
+~$*
+
+# Material do professor (não versionar)
+compartilhado_professor/
