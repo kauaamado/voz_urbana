@@ -15,7 +15,7 @@ avaliadores) são feitos pelo aluno e colegas — não inventar notas de avaliad
   Versão `_revisada.xls`: comentários sem citação de código; os arquivos relacionados ficam em
   comentário de célula "Nota do autor". No relatório, idem (coluna "Nota do autor" no Anexo B).
   Média geral do modelo = média das 10 médias de grupo; N/A fora da média do grupo; títulos 9/10 invertidos.
-- Relatório final: `docs/relatorio/relatorio_voz_urbana.docx` (veio de `~/Downloads/Voz-Urbana-Relatorio-corrigido(1).docx`; PDF assinado via gov.br pelo aluno). `relatorio_voz_urbana.md` e `pendencias_relatorio.md` são rascunhos antigos (dados simulados).
+- Relatório final: `docs/relatorio/relatorio_voz_urbana.docx` (veio de `~/Downloads/Voz-Urbana-Relatorio-corrigido(1).docx`; PDF assinado via gov.br pelo aluno).
 - Apresentação: `docs/apresentacao/apresentacao_voz_urbana.pptx` (12 slides, 5–10 min, cores do app, roteiro nas notas do orador; PDF ao lado).
 
 ## Stack
