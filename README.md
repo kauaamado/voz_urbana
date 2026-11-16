@@ -17,6 +17,13 @@ git push origin v1.0.1
 
 Acompanhe na aba **Actions** do repositório. Se o celular continuar mostrando a versão antiga, recarregue a página uma vez.
 
+### Cache do Cloudflare
+
+A hospedagem serve o site pelo Cloudflare, que guarda arquivos `.js` por até 4h.
+Como o `main.dart.js` do Flutter tem sempre o mesmo nome, o workflow acrescenta a tag na URL dos arquivos de entrada
+(`flutter_bootstrap.js?v=vX.Y.Z` e `main.dart.js?v=vX.Y.Z`), para a versão nova ser baixada logo após o deploy.
+**Use sempre uma tag nova** (`v1.0.2`, `v1.0.3`…). Reaproveitar uma tag reutiliza o cache antigo.
+
 ### Configuração inicial (uma vez só)
 
 1. **Conta FTP restrita:** no cPanel, em *Contas de FTP*, crie o usuário `deploy_voz` com o diretório `public_html/voz_urbana`.
@@ -36,6 +43,9 @@ Acompanhe na aba **Actions** do repositório. Se o celular continuar mostrando a
 
 ```bash
 flutter build web --release --base-href /voz_urbana/
+V=v$(date +%Y%m%d%H%M)   # versão para driblar o cache do Cloudflare
+sed -i "s|src=\"flutter_bootstrap.js\"|src=\"flutter_bootstrap.js?v=$V\"|" build/web/index.html
+sed -i "s|\"mainJsPath\":\"main.dart.js\"|\"mainJsPath\":\"main.dart.js?v=$V\"|" build/web/flutter_bootstrap.js
 cd build/web && zip -r ../voz_urbana.zip .
 ```
 
